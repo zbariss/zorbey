@@ -12,22 +12,6 @@ header {
     padding: 1rem 0;
     text-align: center;
 }
-
-nav ul {
-    padding: 0;
-    list-style: none;
-}
-
-nav ul li {
-    display: inline;
-    margin: 0 15px;
-}
-
-nav a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-}
 .tur-katalogu {
     display: flex;
     flex-wrap: wrap;
@@ -53,22 +37,53 @@ nav a {
     text-decoration: none;
     border-radius: 5px;
 }
+/* Menü ve Navigasyon Düzeni */
 nav {
-    background-color: #333; /* Menü çubuğu rengi */
+    background-color: #333;
     padding: 15px;
     text-align: center;
 }
 
+nav ul {
+    list-style-type: none; /* Noktaları kaldırır */
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline-block; /* Menüleri yan yana dizer */
+    margin: 0 15px;
+}
+
 nav a {
     color: white;
-    padding: 10px 20px;
     text-decoration: none;
     font-weight: bold;
+    padding: 10px 20px;
     border-radius: 5px;
-    margin: 0 10px;
     transition: background-color 0.3s;
 }
 
 nav a:hover {
-    background-color: #ff4500; /* Mouse üzerine geldiğinde renk değişimi */
+    background-color: #ff4500;
 }
+.iletisim-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-iletisim {
+    padding: 15px 25px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    width: 200px;
+    text-align: center;
+}
+
+.wp { background-color: #25d366; }
+.insta { background-color: #e1306c; }
