@@ -28,3 +28,28 @@ nav a {
     text-decoration: none;
     font-weight: bold;
 }
+.tur-katalogu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+.tur-karti {
+    width: 300px;
+    border: 2px solid #333;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    background: #f9f9f9;
+}
+
+.detay-butonu {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
