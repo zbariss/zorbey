@@ -580,7 +580,63 @@ main {
 }
 
 @media (max-width: 768px) {
+    header {
+        padding: 2rem 15px 0 15px;
+    }
+    header h1 {
+        font-size: 2rem;
+    }
+    header p {
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+    }
+    nav {
+        padding: 10px;
+    }
+    nav ul li {
+        display: block;
+        margin: 8px 0;
+    }
+    nav a {
+        display: block;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.03);
+    }
+    .hero-alan {
+        flex-direction: column;
+        text-align: center;
+        gap: 25px;
+        margin: 20px auto;
+    }
+    .hero-metin h2 {
+        font-size: 1.8rem;
+    }
     .vizyon-alan {
         flex-direction: column-reverse;
+        text-align: center;
+        gap: 25px;
+        margin: 20px auto;
+    }
+    .vizyon-metin h2 {
+        font-size: 1.8rem;
+    }
+    .hakkimda-konteyner {
+        flex-direction: column;
+        padding: 20px;
+        gap: 30px;
+        margin: 20px auto;
+    }
+    .profil-metin h2 {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+    .istatistik-seridi {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+    .paket-kart {
+        width: 100%;
+        max-width: 280px;
     }
 }
