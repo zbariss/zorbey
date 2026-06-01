@@ -59,6 +59,7 @@ header p {
 
 nav {
     background-color: rgba(255, 255, 255, 0.03);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     padding: 18px;
@@ -292,7 +293,8 @@ main {
 .paket-kart p {
     color: #64748b;
     font-size: 1rem;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    flex-grow: 1;
 }
 
 .fiyat {
@@ -300,7 +302,6 @@ main {
     font-size: 1.6rem;
     font-weight: bold;
     color: #ff4500;
-    margin-top: auto;
     margin-bottom: 20px;
 }
 
