@@ -85,6 +85,52 @@ nav a:hover {
     text-align: center;
 }
 
+.sayfa-baslik {
+    text-align: center;
+    margin-top: 20px;
+    color: #2c3e50;
+}
+
+.paket-listesi {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.paket-kart {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.fiyat {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 15px 0;
+}
+
+.detay-buton {
+    display: inline-block;
+    background-color: #2c3e50;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.detay-buton:hover {
+    background-color: #ff4500;
+}
+
 #sepet-toplam {
     margin-top: 20px;
     font-weight: bold;
