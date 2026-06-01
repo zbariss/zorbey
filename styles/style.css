@@ -1,35 +1,66 @@
+@keyframes sayfaGiris {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes kartGiris {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, sans-serif;
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #f8f9fa;
-    color: #333;
+    background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    color: #2c3e50;
+    min-height: 100vh;
 }
 
 header {
-    background: linear-gradient(135deg, #1e272e, #2c3e50);
+    background: linear-gradient(135deg, #0f172a, #1e293b);
     color: #fff;
-    padding: 2rem 0 0 0;
+    padding: 2.5rem 0 0 0;
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
 }
 
 header h1 {
     margin: 0;
-    font-size: 2.5rem;
-    letter-spacing: 1px;
+    font-size: 2.8rem;
+    letter-spacing: 2px;
+    font-weight: 800;
+    background: linear-gradient(to right, #ffffff, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 header p {
-    margin: 5px 0 20px 0;
-    font-size: 1.1rem;
-    color: #ced4da;
+    margin: 8px 0 25px 0;
+    font-size: 1.2rem;
+    color: #38bdf8;
+    font-weight: 500;
+    letter-spacing: 1px;
 }
 
 nav {
-    background-color: rgba(0, 0, 0, 0.2);
-    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 18px;
     margin-top: 10px;
 }
 
@@ -41,21 +72,116 @@ nav ul {
 
 nav ul li {
     display: inline-block;
-    margin: 0 15px;
+    margin: 0 20px;
 }
 
 nav a {
-    color: #f8f9fa;
+    color: #cbd5e1;
     text-decoration: none;
     font-weight: 600;
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: all 0.3s ease;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 nav a:hover {
     background-color: #ff4500;
     color: #fff;
+    box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4);
+}
+
+main {
+    animation: sayfaGiris 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.hakkimda-konteyner {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1050px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+    gap: 50px;
+    align-items: center;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+.profil-gorsel {
+    flex: 1;
+    min-width: 300px;
+    text-align: center;
+}
+
+.profil-gorsel img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.15);
+    transition: transform 0.4s ease;
+}
+
+.profil-gorsel img:hover {
+    transform: scale(1.03);
+}
+
+.profil-metin {
+    flex: 1.5;
+    min-width: 350px;
+}
+
+.profil-metin h2 {
+    color: #0f172a;
+    margin-top: 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.profil-metin p {
+    font-size: 1.1rem;
+    color: #475569;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.profil-metin h3 {
+    color: #0f172a;
+    margin-top: 35px;
+    font-size: 1.4rem;
+    border-bottom: 3px solid #ff4500;
+    padding-bottom: 8px;
+    display: inline-block;
+}
+
+.sertifika-listesi {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.sertifika-listesi li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 15px;
+    color: #334155;
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: transform 0.2s ease;
+}
+
+.sertifika-listesi li:hover {
+    transform: translateX(5px);
+    color: #ff4500;
+}
+
+.sertifika-listesi li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #ff4500;
+    font-weight: 900;
+    font-size: 1.2rem;
 }
 
 .hero-alan {
@@ -64,145 +190,110 @@ nav a:hover {
     align-items: center;
     justify-content: space-between;
     max-width: 1100px;
-    margin: 40px auto;
+    margin: 50px auto;
     padding: 20px;
-    gap: 30px;
+    gap: 40px;
 }
 
 .hero-metin {
     flex: 1;
-    min-width: 300px;
+    min-width: 350px;
 }
 
 .hero-metin h2 {
-    font-size: 2.2rem;
-    color: #1e272e;
-    line-height: 1.3;
+    font-size: 2.6rem;
+    color: #0f172a;
+    line-height: 1.2;
     margin-bottom: 20px;
+    font-weight: 800;
 }
 
 .hero-metin p {
-    font-size: 1.1rem;
-    color: #57606f;
-    margin-bottom: 30px;
+    font-size: 1.2rem;
+    color: #475569;
+    margin-bottom: 35px;
 }
 
 .hero-buton {
     display: inline-block;
-    background-color: #ff4500;
+    background: linear-gradient(135deg, #ff4500, #ff6b35);
     color: white;
     text-decoration: none;
-    padding: 12px 28px;
-    border-radius: 5px;
+    padding: 14px 35px;
+    border-radius: 8px;
     font-weight: bold;
-    box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
-    transition: transform 0.2s ease;
+    box-shadow: 0 10px 25px rgba(255, 69, 0, 0.3);
+    transition: all 0.3s ease;
 }
 
 .hero-buton:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(255, 69, 0, 0.5);
 }
 
 .hero-gorsel {
     flex: 1;
-    min-width: 300px;
+    min-width: 350px;
     text-align: center;
 }
 
 .hero-gorsel img {
     max-width: 100%;
     height: auto;
-    border-radius: 12px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
 }
 
 .sayfa-baslik {
     text-align: center;
-    margin-top: 40px;
-    color: #1e272e;
-    font-size: 2rem;
+    margin-top: 50px;
+    color: #0f172a;
+    font-size: 2.4rem;
+    font-weight: 800;
 }
 
 .paket-listesi {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 25px;
-    padding: 30px 20px;
+    gap: 30px;
+    padding: 40px 20px;
 }
 
 .paket-kart {
     border: none;
-    border-radius: 10px;
-    padding: 30px 20px;
+    border-radius: 16px;
+    padding: 35px 25px;
     width: 260px;
     text-align: center;
-    background-color: #fff;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease;
+    animation: kartGiris 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) backwards;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid rgba(0,0,0,0.02);
 }
 
 .paket-kart:hover {
-    transform: translateY(-5px);
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+    border-color: rgba(255, 69, 0, 0.2);
 }
 
 .paket-kart h3 {
-    color: #1e272e;
-    font-size: 1.3rem;
+    color: #0f172a;
+    font-size: 1.4rem;
+    font-weight: 700;
     margin-top: 0;
 }
 
 .paket-kart p {
-    color: #57606f;
-    font-size: 0.95rem;
+    color: #64748b;
+    font-size: 1rem;
 }
 
 .fiyat {
-    display: block;
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: #ff4500;
-    margin: 20px 0;
-}
-
-.detay-buton {
-    display: inline-block;
-    background-color: #1e272e;
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-weight: bold;
-    margin-top: auto;
-    transition: background-color 0.2s;
-}
-
-.detay-buton:hover {
-    background-color: #ff4500;
-}
-
-.detay-konteyner {
-    max-width: 650px;
-    margin: 5px auto;
-    background-color: #fff;
-    padding: 35px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-}
-
-.detay-icerik ul {
-    margin: 20px 0;
-    padding-left: 20px;
-}
-
-.detay-icerik li {
-    margin-bottom: 10px;
-    color: #485460;
-}
-
-.detay-fiyat {
     display: block;
     font-size: 1.6rem;
     font-weight: bold;
@@ -210,142 +301,130 @@ nav a:hover {
     margin: 25px 0;
 }
 
-.sepet-buton {
+.detay-buton {
+    display: inline-block;
+    background-color: #0f172a;
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-top: auto;
+    transition: all 0.3s ease;
+}
+
+.detay-buton:hover {
     background-color: #ff4500;
+    box-shadow: 0 5px 15px rgba(255, 69, 0, 0.3);
+}
+
+.detay-konteyner {
+    max-width: 700px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 45px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+.detay-icerik ul {
+    margin: 25px 0;
+    padding-left: 20px;
+}
+
+.detay-icerik li {
+    margin-bottom: 12px;
+    color: #334155;
+    font-size: 1.05rem;
+}
+
+.detay-fiyat {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #ff4500;
+    margin: 30px 0;
+}
+
+.sepet-buton {
+    background: linear-gradient(135deg, #ff4500, #ff6b35);
     color: white;
     border: none;
-    padding: 14px 25px;
-    font-size: 1rem;
+    padding: 16px 30px;
+    font-size: 1.1rem;
     font-weight: bold;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     width: 100%;
-    box-shadow: 0 4px 10px rgba(255, 69, 0, 0.2);
+    box-shadow: 0 10px 20px rgba(255, 69, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
 .sepet-buton:hover {
-    background-color: #1e272e;
+    background: #0f172a;
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
 }
 
 #sepet-toplam {
-    margin-top: 25px;
-    font-size: 1.2rem;
+    margin-top: 30px;
+    font-size: 1.3rem;
     font-weight: bold;
-    color: #1e272e;
+    color: #0f172a;
 }
 
 #btn-sepeti-temizle {
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
 .iletisim-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
-    margin-top: 20px;
+    gap: 20px;
+    margin-top: 35px;
 }
 
 .btn-iletisim {
-    padding: 15px 25px;
+    padding: 16px 30px;
     text-decoration: none;
     color: white;
     font-weight: bold;
-    border-radius: 5px;
-    width: 220px;
+    border-radius: 8px;
+    width: 240px;
     text-align: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+
+.btn-iletisim:hover {
+    transform: translateY(-3px);
 }
 
 .wp {
     background-color: #25d366;
+    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);
 }
 
 .insta {
     background-color: #e1306c;
+    box-shadow: 0 10px 20px rgba(225, 48, 108, 0.2);
 }
 
 .tur-katalogu {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 25px;
-    padding: 30px 20px;
+    gap: 30px;
+    padding: 40px 20px;
 }
 
 .tur-karti {
-    width: 280px;
+    width: 300px;
     border: none;
-    padding: 30px 20px;
-    border-radius: 10px;
+    padding: 35px 25px;
+    border-radius: 16px;
     text-align: center;
-    background: #fff;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-}
-
-.hakkimda-konteyner {
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 950px;
-    margin: 40px auto;
-    background-color: #fff;
-    padding: 35px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    gap: 40px;
-    align-items: flex-start;
-}
-
-.profil-gorsel {
-    flex: 1;
-    min-width: 250px;
-    text-align: center;
-}
-
-.profil-gorsel img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.profil-metin {
-    flex: 2;
-    min-width: 300px;
-}
-
-.profil-metin h2 {
-    color: #1e272e;
-    margin-top: 0;
-    font-size: 1.8rem;
-}
-
-.profil-metin h3 {
-    color: #1e272e;
-    margin-top: 25px;
-    font-size: 1.3rem;
-    border-bottom: 2px solid #f4f4f4;
-    padding-bottom: 8px;
-}
-
-.sertifika-listesi {
-    list-style-type: none;
-    padding: 0;
-    margin: 15px 0;
-}
-
-.sertifika-listesi li {
-    position: relative;
-    padding-left: 20px;
-    margin-bottom: 10px;
-    color: #485460;
-    font-weight: 500;
-}
-
-.sertifika-listesi li::before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-    color: #ff4500;
-    font-weight: bold;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
 }
