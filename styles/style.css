@@ -33,29 +33,43 @@ body {
 header {
     background: #0f172a;
     background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px),
-        radial-gradient(at 50% 0%, rgba(255, 69, 0, 0.15) 0px, transparent 60%), 
-        radial-gradient(at 0% 100%, rgba(56, 189, 248, 0.06) 0px, transparent 50%);
-    background-size: 40px 40px, 40px 40px, auto, auto;
+        radial-gradient(at 50% 0%, rgba(255, 69, 0, 0.12) 0px, transparent 50%), 
+        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.06) 0px, transparent 40%);
     color: #fff;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
+    padding: 3.5rem 0 0 0;
+    text-align: center;
     box-shadow: 0 10px 40px rgba(15, 23, 42, 0.3);
     position: relative;
-    overflow: hidden;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 3rem;
+    letter-spacing: 3px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff 30%, #e2e8f0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+header p {
+    margin: 10px 0 30px 0;
+    font-size: 1.1rem;
+    color: #94a3b8;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 nav {
-    order: -1;
-    background: rgba(15, 23, 42, 0.7);
+    background: rgba(15, 23, 42, 0.6);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     padding: 16px;
-    width: 100%;
-    box-sizing: border-box;
+    margin-top: 15px;
 }
 
 nav ul {
@@ -87,30 +101,206 @@ nav a:hover {
     box-shadow: inset 0 0 0 1px rgba(255, 69, 0, 0.25);
 }
 
-header h1 {
-    margin: 4.5rem 0 0 0;
-    font-size: 3.2rem;
-    letter-spacing: 2px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #ffffff 40%, #cbd5e1 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-align: center;
-}
-
-header p {
-    margin: 12px 0 4.5rem 0;
-    font-size: 1.05rem;
-    color: #94a3b8;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    text-align: center;
-}
-
 main {
     animation: sayfaGiris 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.hero-alan {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 20px;
+    gap: 40px;
+}
+
+.hero-metin {
+    flex: 1;
+    min-width: 350px;
+}
+
+.hero-metin h2 {
+    font-size: 2.6rem;
+    color: #0f172a;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+.hero-metin p {
+    font-size: 1.2rem;
+    color: #475569;
+    margin-bottom: 35px;
+}
+
+.hero-buton {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff4500, #ff6b35);
+    color: white;
+    text-decoration: none;
+    padding: 14px 35px;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 10px 25px rgba(255, 69, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.hero-buton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(255, 69, 0, 0.5);
+}
+
+.hero-gorsel {
+    flex: 1;
+    min-width: 350px;
+    text-align: center;
+}
+
+.hero-gorsel img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
+.vizyon-alan {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 20px;
+    gap: 40px;
+}
+
+.vizyon-gorsel {
+    flex: 1;
+    min-width: 350px;
+    text-align: center;
+}
+
+.vizyon-gorsel img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    transition: transform 0.4s ease;
+}
+
+.vizyon-gorsel img:hover {
+    transform: scale(1.02);
+}
+
+.vizyon-metin {
+    flex: 1;
+    min-width: 350px;
+}
+
+.vizyon-metin h2 {
+    font-size: 2.4rem;
+    color: #0f172a;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+.vizyon-metin p {
+    font-size: 1.15rem;
+    color: #475569;
+    text-align: justify;
+}
+
+.istatistik-seridi {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 1100px;
+    margin: 0 auto 40px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    gap: 20px;
+    border: 1px solid rgba(0,0,0,0.01);
+}
+
+.istatistik-kutu {
+    text-align: center;
+    flex: 1;
+    min-width: 200px;
+}
+
+.istatistik-kutu h3 {
+    font-size: 2.2rem;
+    color: #ff4500;
+    margin: 0 0 5px 0;
+    font-weight: 800;
+}
+
+.istatistik-kutu p {
+    margin: 0;
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.bolum-baslik {
+    text-align: center;
+    color: #0f172a;
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 60px 0 30px 0;
+}
+
+.surec-listesi {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    max-width: 1100px;
+    margin: 0 auto 60px auto;
+    padding: 0 20px;
+}
+
+.surec-kart {
+    background: #ffffff;
+    padding: 35px 25px;
+    border-radius: 16px;
+    width: 290px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    border: 1px solid rgba(0,0,0,0.01);
+    position: relative;
+    transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s ease;
+}
+
+.surec-kart:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.05);
+}
+
+.surec-no {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: rgba(255, 69, 0, 0.08);
+    position: absolute;
+    top: 15px;
+    right: 25px;
+}
+
+.surec-kart h4 {
+    margin: 0 0 12px 0;
+    color: #0f172a;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.surec-kart p {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.95rem;
 }
 
 .hakkimda-konteyner {
@@ -203,66 +393,6 @@ main {
     font-size: 1.2rem;
 }
 
-.hero-alan {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1100px;
-    margin: 50px auto;
-    padding: 20px;
-    gap: 40px;
-}
-
-.hero-metin {
-    flex: 1;
-    min-width: 350px;
-}
-
-.hero-metin h2 {
-    font-size: 2.6rem;
-    color: #0f172a;
-    line-height: 1.2;
-    margin-bottom: 20px;
-    font-weight: 800;
-}
-
-.hero-metin p {
-    font-size: 1.2rem;
-    color: #475569;
-    margin-bottom: 35px;
-}
-
-.hero-buton {
-    display: inline-block;
-    background: linear-gradient(135deg, #ff4500, #ff6b35);
-    color: white;
-    text-decoration: none;
-    padding: 14px 35px;
-    border-radius: 8px;
-    font-weight: bold;
-    box-shadow: 0 10px 25px rgba(255, 69, 0, 0.3);
-    transition: all 0.3s ease;
-}
-
-.hero-buton:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 30px rgba(255, 69, 0, 0.5);
-}
-
-.hero-gorsel {
-    flex: 1;
-    min-width: 350px;
-    text-align: center;
-}
-
-.hero-gorsel img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-}
-
 .sayfa-baslik {
     text-align: center;
     margin-top: 50px;
@@ -335,7 +465,7 @@ main {
 
 .detay-buton:hover {
     background-color: #ff4500;
-    box-shadow: 0 5px 15px rgba(255, 69, 0, 0.3);
+    box-shadow: 0 5px 15px rgba(255, 69, 0, 0.35);
 }
 
 .detay-konteyner {
@@ -449,55 +579,6 @@ main {
     box-shadow: 0 10px 30px rgba(0,0,0,0.04);
 }
 
-.vizyon-alan {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1100px;
-    margin: 60px auto;
-    padding: 20px;
-    gap: 40px;
-}
-
-.vizyon-gorsel {
-    flex: 1;
-    min-width: 350px;
-    text-align: center;
-}
-
-.vizyon-gorsel img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-    transition: transform 0.4s ease;
-}
-
-.vizyon-gorsel img:hover {
-    transform: scale(1.02);
-}
-
-.vizyon-metin {
-    flex: 1;
-    min-width: 350px;
-}
-
-.vizyon-metin h2 {
-    font-size: 2.4rem;
-    color: #0f172a;
-    line-height: 1.2;
-    margin-bottom: 20px;
-    font-weight: 800;
-}
-
-.vizyon-metin p {
-    font-size: 1.15rem;
-    color: #475569;
-    text-align: justify;
-}
-
-/* Küçük ekranlarda (Mobil) görselin metnin altında kalmaması için hizalama kuralı */
 @media (max-width: 768px) {
     .vizyon-alan {
         flex-direction: column-reverse;
