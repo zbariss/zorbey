@@ -3,20 +3,34 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #f8f9fa;
+    color: #333;
 }
 
 header {
-    background: #2c3e50;
+    background: linear-gradient(135deg, #1e272e, #2c3e50);
     color: #fff;
-    padding: 1rem 0;
+    padding: 2rem 0 0 0;
     text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+}
+
+header p {
+    margin: 5px 0 20px 0;
+    font-size: 1.1rem;
+    color: #ced4da;
 }
 
 nav {
-    background-color: #333;
+    background-color: rgba(0, 0, 0, 0.2);
     padding: 15px;
-    text-align: center;
+    margin-top: 10px;
 }
 
 nav ul {
@@ -31,59 +45,138 @@ nav ul li {
 }
 
 nav a {
-    color: white;
+    color: #f8f9fa;
     text-decoration: none;
-    font-weight: bold;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
 }
 
 nav a:hover {
     background-color: #ff4500;
+    color: #fff;
+}
+
+.hero-alan {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+    gap: 30px;
+}
+
+.hero-metin {
+    flex: 1;
+    min-width: 300px;
+}
+
+.hero-metin h2 {
+    font-size: 2.2rem;
+    color: #1e272e;
+    line-height: 1.3;
+    margin-bottom: 20px;
+}
+
+.hero-metin p {
+    font-size: 1.1rem;
+    color: #57606f;
+    margin-bottom: 30px;
+}
+
+.hero-buton {
+    display: inline-block;
+    background-color: #ff4500;
+    color: white;
+    text-decoration: none;
+    padding: 12px 28px;
+    border-radius: 5px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+    transition: transform 0.2s ease;
+}
+
+.hero-buton:hover {
+    transform: translateY(-2px);
+}
+
+.hero-gorsel {
+    flex: 1;
+    min-width: 300px;
+    text-align: center;
+}
+
+.hero-gorsel img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 
 .sayfa-baslik {
     text-align: center;
-    margin-top: 20px;
-    color: #2c3e50;
+    margin-top: 40px;
+    color: #1e272e;
+    font-size: 2rem;
 }
 
 .paket-listesi {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
-    padding: 20px;
+    gap: 25px;
+    padding: 30px 20px;
 }
 
 .paket-kart {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 20px;
-    width: 250px;
+    border: none;
+    border-radius: 10px;
+    padding: 30px 20px;
+    width: 260px;
     text-align: center;
     background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+}
+
+.paket-kart:hover {
+    transform: translateY(-5px);
+}
+
+.paket-kart h3 {
+    color: #1e272e;
+    font-size: 1.3rem;
+    margin-top: 0;
+}
+
+.paket-kart p {
+    color: #57606f;
+    font-size: 0.95rem;
 }
 
 .fiyat {
     display: block;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: bold;
-    color: #2c3e50;
-    margin: 15px 0;
+    color: #ff4500;
+    margin: 20px 0;
 }
 
 .detay-buton {
     display: inline-block;
-    background-color: #2c3e50;
+    background-color: #1e272e;
     color: white;
     text-decoration: none;
-    padding: 10px 15px;
+    padding: 10px 20px;
     border-radius: 5px;
     font-weight: bold;
-    margin-top: 10px;
+    margin-top: auto;
+    transition: background-color 0.2s;
 }
 
 .detay-buton:hover {
@@ -91,50 +184,54 @@ nav a:hover {
 }
 
 .detay-konteyner {
-    max-width: 600px;
-    margin: 30px auto;
+    max-width: 650px;
+    margin: 5px auto;
     background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 35px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
 .detay-icerik ul {
-    margin: 15px 0;
+    margin: 20px 0;
     padding-left: 20px;
 }
 
 .detay-icerik li {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    color: #485460;
 }
 
 .detay-fiyat {
     display: block;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: bold;
-    color: #2c3e50;
-    margin: 20px 0;
+    color: #ff4500;
+    margin: 25px 0;
 }
 
 .sepet-buton {
-    background-color: #2c3e50;
+    background-color: #ff4500;
     color: white;
     border: none;
-    padding: 12px 25px;
+    padding: 14px 25px;
     font-size: 1rem;
     font-weight: bold;
     border-radius: 5px;
     cursor: pointer;
     width: 100%;
+    box-shadow: 0 4px 10px rgba(255, 69, 0, 0.2);
 }
 
 .sepet-buton:hover {
-    background-color: #ff4500;
+    background-color: #1e272e;
 }
 
 #sepet-toplam {
-    margin-top: 20px;
+    margin-top: 25px;
+    font-size: 1.2rem;
     font-weight: bold;
+    color: #1e272e;
 }
 
 #btn-sepeti-temizle {
@@ -146,7 +243,7 @@ nav a:hover {
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .btn-iletisim {
@@ -155,8 +252,9 @@ nav a:hover {
     color: white;
     font-weight: bold;
     border-radius: 5px;
-    width: 200px;
+    width: 220px;
     text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .wp {
@@ -170,38 +268,17 @@ nav a:hover {
 .tur-katalogu {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    padding: 20px;
+    justify-content: center;
+    gap: 25px;
+    padding: 30px 20px;
 }
 
 .tur-karti {
-    width: 300px;
-    border: 2px solid #333;
-    padding: 20px;
-    border-radius: 15px;
+    width: 280px;
+    border: none;
+    padding: 30px 20px;
+    border-radius: 10px;
     text-align: center;
-    background: #f9f9f9;
-}
-
-.paket-kart {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 20px;
-    width: 250px;
-    text-align: center;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-}
-
-.detay-buton {
-    display: inline-block;
-    background-color: #2c3e50;
-    color: white;
-    text-decoration: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    font-weight: bold;
-    margin-top: auto;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
