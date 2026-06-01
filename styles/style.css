@@ -45,6 +45,7 @@ header h1 {
     font-weight: 800;
     background: linear-gradient(to right, #ffffff, #94a3b8);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -105,7 +106,7 @@ main {
     box-shadow: 0 20px 40px rgba(0,0,0,0.06);
     gap: 50px;
     align-items: center;
-    border: 1px solid rgba(0,0,0,0.03);
+    border: 1px solid rgba(0,0,0,0.02);
 }
 
 .profil-gorsel {
@@ -291,6 +292,7 @@ main {
 .paket-kart p {
     color: #64748b;
     font-size: 1rem;
+    margin-bottom: 15px;
 }
 
 .fiyat {
@@ -298,7 +300,8 @@ main {
     font-size: 1.6rem;
     font-weight: bold;
     color: #ff4500;
-    margin: 25px 0;
+    margin-top: auto;
+    margin-bottom: 20px;
 }
 
 .detay-buton {
@@ -309,7 +312,6 @@ main {
     padding: 12px 24px;
     border-radius: 8px;
     font-weight: bold;
-    margin-top: auto;
     transition: all 0.3s ease;
 }
 
