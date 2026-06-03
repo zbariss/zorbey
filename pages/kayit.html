@@ -66,6 +66,28 @@
                 </div>
 
                 <div class="form-grubu">
+                    <label>Tercih Edilen Eğitim Paketleri</label>
+                    <div class="secenek-listesi">
+                        <label class="secenek-etiket">
+                            <input type="checkbox" id="paket-tum" name="paketler" value="tum">
+                            <span>İleri ve Güvenli Sürüş (Tüm Paket)</span>
+                        </label>
+                        <label class="secenek-etiket">
+                            <input type="checkbox" id="paket-teorik" name="paketler" value="teorik">
+                            <span>Yalnız Teorik Eğitim Paketi</span>
+                        </label>
+                        <label class="secenek-etiket">
+                            <input type="checkbox" id="paket-kapali" name="paketler" value="kapali">
+                            <span>Yalnız Kapalı Alan Eğitim Paketi</span>
+                        </label>
+                        <label class="secenek-etiket">
+                            <input type="checkbox" id="paket-yol" name="paketler" value="yol">
+                            <span>Yalnız Yol Sürüş Eğitim Paketi</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-grubu">
                     <label for="neden">Güvenli ve İleri Sürüş Eğitimini Neden Almak İstiyorsunuz?</label>
                     <textarea id="neden" name="neden" placeholder="Eğitimden beklentilerinizi ve geliştirmek istediğiniz sürüş alışkanlıklarınızı kısaca belirtiniz..." required></textarea>
                 </div>
@@ -74,5 +96,34 @@
             </form>
         </div>
     </main>
+
+    <script>
+        const tumPaket = document.getElementById('paket-tum');
+        const teorikPaket = document.getElementById('paket-teorik');
+        const kapaliPaket = document.getElementById('paket-kapali');
+        const yolPaket = document.getElementById('paket-yol');
+
+        function paketYonetimi(e) {
+            if (e.target === tumPaket && tumPaket.checked) {
+                teorikPaket.checked = false;
+                kapaliPaket.checked = false;
+                yolPaket.checked = false;
+            } else if (e.target !== tumPaket) {
+                if (teorikPaket.checked && kapaliPaket.checked && yolPaket.checked) {
+                    tumPaket.checked = true;
+                    teorikPaket.checked = false;
+                    kapaliPaket.checked = false;
+                    yolPaket.checked = false;
+                } else if (teorikPaket.checked || kapaliPaket.checked || yolPaket.checked) {
+                    tumPaket.checked = false;
+                }
+            }
+        }
+
+        tumPaket.addEventListener('change', paketYonetimi);
+        teorikPaket.addEventListener('change', paketYonetimi);
+        kapaliPaket.addEventListener('change', paketYonetimi);
+        yolPaket.addEventListener('change', paketYonetimi);
+    </script>
 </body>
 </html>
