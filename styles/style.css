@@ -579,6 +579,134 @@ main {
     box-shadow: 0 10px 30px rgba(0,0,0,0.04);
 }
 
+.kayit-konteyner {
+    max-width: 650px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+.form-aciklama {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 35px;
+    font-size: 1rem;
+}
+
+.form-grubu-ikili {
+    display: flex;
+    gap: 20px;
+}
+
+.form-grubu-ikili .form-grubu {
+    flex: 1;
+}
+
+.form-grubu {
+    margin-bottom: 25px;
+}
+
+.form-grubu label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #0f172a;
+    font-size: 0.95rem;
+}
+
+.form-grubu input[type="text"],
+.form-grubu input[type="number"],
+.form-grubu input[type="tel"],
+.form-grubu textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    color: #2c3e50;
+    background-color: #f8fafc;
+    box-sizing: border-box;
+    transition: all 0.25s ease;
+}
+
+.form-grubu input[type="text"]:focus,
+.form-grubu input[type="number"]:focus,
+.form-grubu input[type="tel"]:focus,
+.form-grubu textarea:focus {
+    outline: none;
+    border-color: #ff4500;
+    box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.15);
+    background-color: #ffffff;
+}
+
+.form-grubu textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.secenek-listesi {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.secenek-etiket {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f8fafc;
+    padding: 14px 16px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.secenek-etiket:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.secenek-etiket input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #ff4500;
+    cursor: pointer;
+    margin: 0;
+}
+
+.secenek-etiket span {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+.kayit-buton {
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, #ff4500, #ff6b35);
+    color: white;
+    border: none;
+    padding: 16px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(255, 69, 0, 0.2);
+    transition: all 0.25s ease;
+    margin-top: 35px;
+}
+
+.kayit-buton:hover {
+    background: #0f172a;
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
+}
+
 @media (max-width: 768px) {
     header {
         padding: 2rem 15px 0 15px;
@@ -639,95 +767,8 @@ main {
         width: 100%;
         max-width: 280px;
     }
-    .kayit-konteyner {
-    max-width: 650px;
-    margin: 50px auto;
-    background: #ffffff;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.06);
-    border: 1px solid rgba(0,0,0,0.02);
-}
-
-.form-aciklama {
-    text-align: center;
-    color: #64748b;
-    margin-bottom: 35px;
-    font-size: 1rem;
-}
-
-.form-grubu-ikili {
-    display: flex;
-    gap: 20px;
-}
-
-.form-grubu-ikili .form-grubu {
-    flex: 1;
-}
-
-.form-grubu {
-    margin-bottom: 25px;
-}
-
-.form-grubu label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #0f172a;
-    font-size: 0.95rem;
-}
-
-.form-grubu input,
-.form-grubu textarea {
-    width: 100%;
-    padding: 12px 16px;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 1rem;
-    color: #2c3e50;
-    background-color: #f8fafc;
-    box-sizing: border-box;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
-}
-
-.form-grubu input:focus,
-.form-grubu textarea:focus {
-    outline: none;
-    border-color: #ff4500;
-    box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.15);
-    background-color: #ffffff;
-}
-
-.form-grubu textarea {
-    resize: vertical;
-    min-height: 110px;
-}
-
-.kayit-buton {
-    display: block;
-    width: 100%;
-    background: linear-gradient(135deg, #ff4500, #ff6b35);
-    color: white;
-    border: none;
-    padding: 16px 30px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 10px 20px rgba(255, 69, 0, 0.2);
-    transition: all 0.25s ease;
-}
-
-.kayit-buton:hover {
-    background: #0f172a;
-    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
-}
-
-@media (max-width: 480px) {
     .form-grubu-ikili {
         flex-direction: column;
         gap: 0;
     }
-}
 }
