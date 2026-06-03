@@ -771,4 +771,12 @@ main {
         flex-direction: column;
         gap: 0;
     }
+    .detay-konteyner a {
+    box-sizing: border-box;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    display: block;
+    text-align: center;
+}
 }
