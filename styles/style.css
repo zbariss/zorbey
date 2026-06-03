@@ -639,4 +639,95 @@ main {
         width: 100%;
         max-width: 280px;
     }
+    .kayit-konteyner {
+    max-width: 650px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+.form-aciklama {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 35px;
+    font-size: 1rem;
+}
+
+.form-grubu-ikili {
+    display: flex;
+    gap: 20px;
+}
+
+.form-grubu-ikili .form-grubu {
+    flex: 1;
+}
+
+.form-grubu {
+    margin-bottom: 25px;
+}
+
+.form-grubu label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #0f172a;
+    font-size: 0.95rem;
+}
+
+.form-grubu input,
+.form-grubu textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    color: #2c3e50;
+    background-color: #f8fafc;
+    box-sizing: border-box;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.form-grubu input:focus,
+.form-grubu textarea:focus {
+    outline: none;
+    border-color: #ff4500;
+    box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.15);
+    background-color: #ffffff;
+}
+
+.form-grubu textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+.kayit-buton {
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, #ff4500, #ff6b35);
+    color: white;
+    border: none;
+    padding: 16px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(255, 69, 0, 0.2);
+    transition: all 0.25s ease;
+}
+
+.kayit-buton:hover {
+    background: #0f172a;
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
+}
+
+@media (max-width: 480px) {
+    .form-grubu-ikili {
+        flex-direction: column;
+        gap: 0;
+    }
+}
 }

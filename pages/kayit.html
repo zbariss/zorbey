@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/style.css">
+    <title>Eğitime Kayıt Ol | Fatih Barış</title>
+</head>
+<body>
+    <header>
+        <h1>Fatih BARIŞ</h1>
+        <p>Güvenli ve İleri Sürüş Teknikleri Eğitmeni</p>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Anasayfa</a></li>
+                <li><a href="hizmetler.html">Eğitim Paketleri</a></li>
+                <li><a href="turlar.html">Motosiklet Turları</a></li>
+                <li><a href="kayit.html">Eğitime Kayıt Ol</a></li>
+                <li><a href="iletisim.html">İletişim</a></li>
+                <li><a href="hakkimda.html">Hakkımda</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="kayit-konteyner">
+            <h2 class="sayfa-baslik">Eğitim Ön Başvuru Formu</h2>
+            <p class="form-aciklama">Almak istediğiniz eğitim paketini belirlemek ve adınıza kontenjan ayrılmasını sağlamak için lütfen aşağıdaki bilgileri eksiksiz doldurunuz.</p>
+            
+            <form action="onay.html" method="GET">
+                <div class="form-grubu-ikili">
+                    <div class="form-grubu">
+                        <label for="ad">Adınız</label>
+                        <input type="text" id="ad" name="ad" required>
+                    </div>
+                    <div class="form-grubu">
+                        <label for="soyad">Soyadınız</label>
+                        <input type="text" id="soyad" name="soyad" required>
+                    </div>
+                </div>
+
+                <div class="form-grubu-ikili">
+                    <div class="form-grubu">
+                        <label for="yas">Yaşınız</label>
+                        <input type="number" id="yas" name="yas" min="16" max="80" required>
+                    </div>
+                    <div class="form-grubu">
+                        <label for="telefon">Telefon Numaranız</label>
+                        <input type="tel" id="telefon" name="telefon" placeholder="05xx xxx xx xx" required>
+                    </div>
+                </div>
+
+                <div class="form-grubu">
+                    <label for="meslek">Mesleğiniz</label>
+                    <input type="text" id="meslek" name="meslek" required>
+                </div>
+
+                <div class="form-grubu">
+                    <label for="motosiklet">Motosikletinizin Markası ve Modeli</label>
+                    <input type="text" id="motosiklet" name="motosiklet" placeholder="Örn: BMW R1250 GS / Honda Africa Twin" required>
+                </div>
+
+                <div class="form-grubu">
+                    <label for="tecrube">Kaç senedir motosiklet kullanıyorsunuz?</label>
+                    <input type="text" id="tecrube" name="tecrube" placeholder="Örn: 3 Yıl / 6 Ay" required>
+                </div>
+
+                <div class="form-grubu">
+                    <label for="neden">Güvenli ve İleri Sürüş Eğitimini Neden Almak İstiyorsunuz?</label>
+                    <textarea id="neden" name="neden" placeholder="Eğitimden beklentilerinizi ve geliştirmek istediğiniz sürüş alışkanlıklarınızı kısaca belirtiniz..." required></textarea>
+                </div>
+
+                <button type="submit" class="kayit-buton">Ön Başvuruyu Tamamla</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
