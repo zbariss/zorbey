@@ -779,4 +779,41 @@ main {
     display: block;
     text-align: center;
 }
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    background: rgba(15, 23, 42, 0.75) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+}
+
+nav ul li a {
+    position: relative;
+    background: none !important;
+    box-shadow: none !important;
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: #ff4500;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+nav ul li a:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+.surec-kart:hover, 
+.istatistik-seridi:hover {
+    border-color: rgba(255, 69, 0, 0.3) !important;
+    box-shadow: 0 20px 40px rgba(255, 69, 0, 0.05), 0 1px 3px rgba(255, 69, 0, 0.1) !important;
+    transform: translateY(-5px);
+}
 }
