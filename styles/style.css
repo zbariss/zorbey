@@ -897,3 +897,91 @@ footer {
     font-size: 0.85rem;
     margin: 0;
 }
+
+.footer-minimal h4 {
+    color: #ff4500;
+    font-size: 1.4rem;
+    margin: 0 0 5px 0;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.footer-minimal p {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    margin: 0 0 20px 0;
+    font-weight: 600;
+}
+
+.footer-sosyal {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.footer-ikon {
+    color: #94a3b8;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-ikon:hover {
+    transform: translateY(-4px);
+}
+
+.wp-ikon:hover {
+    color: #25d366;
+}
+
+.insta-ikon:hover {
+    color: #e1306c;
+}
+
+.iletisim-kart-sistemi {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 30px;
+}
+
+.iletisim-satir {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8fafc;
+    padding: 22px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.iletisim-satir:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 69, 0, 0.3);
+    box-shadow: 0 12px 30px rgba(255, 69, 0, 0.06);
+}
+
+.iletisim-bilgi h5 {
+    margin: 0 0 4px 0;
+    font-size: 1.15rem;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.iletisim-bilgi p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #64748b;
+}
+
+.iletisim-aksiyon {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #ff4500;
+    letter-spacing: 0.5px;
+}
