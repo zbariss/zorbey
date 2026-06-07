@@ -109,5 +109,36 @@
             <p>&copy; 2026 Fatih Barış. Tüm Hakları Saklıdır.</p>
         </div>
     </footer>
+    <script>
+        const sayaclar = document.querySelectorAll('.istatistik-kutu h3');
+        const sayacBaslat = (element) => {
+            const hedef = parseInt(element.innerText.replace(/[^0-9]/g, ''));
+            const ek = element.innerText.replace(/[0-9]/g, '');
+            let baslangic = 0;
+            const artis = hedef / 50;
+            
+            const guncelle = () => {
+                baslangic += artis;
+                if (baslangic < hedef) {
+                    element.innerText = Math.ceil(baslangic).toLocaleString('tr-TR') + ek;
+                    setTimeout(guncelle, 20);
+                } else {
+                    element.innerText = hedef.toLocaleString('tr-TR') + ek;
+                }
+            };
+            guncelle();
+        };
+
+        const gözlemci = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    sayacBaslat(entry.target);
+                    gözlemci.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sayaclar.forEach(sayac => gözlemci.observe(sayac));
+    </script>
 </body>
 </html>
