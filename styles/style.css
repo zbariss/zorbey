@@ -989,3 +989,24 @@ footer {
 .istatistik-kutu h3 {
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
+
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px 20px;
+}
+
+nav ul li {
+    display: block;
+    margin: 0;
+}
+
+@media (max-width: 1150px) and (min-width: 769px) {
+    nav a {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        letter-spacing: 0px;
+    }
+}
