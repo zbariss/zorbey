@@ -11,6 +11,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         const sayacBaslat = (element) => {
+            if (element.dataset.animationId) {
+                cancelAnimationFrame(parseInt(element.dataset.animationId));
+            }
+            
             const hamMetin = element.dataset.orjinal;
             const hedefSayiString = hamMetin.replace(/[^0-9]/g, '');
             const metinEki = hamMetin.replace(/[0-9.]/g, ''); 
@@ -31,17 +35,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 element.innerText = suankiDeger.toLocaleString('tr-TR') + metinEki;
                 
                 if (ilerleme < 1) {
-                    requestAnimationFrame(animasyonAdimi);
+                    element.dataset.animationId = requestAnimationFrame(animasyonAdimi);
                 }
             };
-            requestAnimationFrame(animasyonAdimi);
+            element.dataset.animationId = requestAnimationFrame(animasyonAdimi);
         };
 
         const gozlemci = new IntersectionObserver((girdiler) => {
             girdiler.forEach(girdi => {
                 if (girdi.isIntersecting) {
                     sayacBaslat(girdi.target);
-                    gozlemci.unobserve(girdi.target); // İşte çakışmayı önleyen altın dokunuş!
+                } else {
+                    const hamMetin = girdi.target.dataset.orjinal;
+                    const metinEki = hamMetin.replace(/[0-9.]/g, '');
+                    girdi.target.innerText = "0" + metinEki;
+                    if (girdi.target.dataset.animationId) {
+                        cancelAnimationFrame(parseInt(girdi.target.dataset.animationId));
+                    }
                 }
             });
         }, { threshold: 0.1 });
