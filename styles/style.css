@@ -1037,12 +1037,14 @@ nav ul li {
     }
 }
 
-/* Sadece tepe alanını kurumsal minimalizme zorlayan güvenli blok */
 header {
     background: #090d16 !important;
     background-image: none !important;
     border-top: none !important;
     padding: 5rem 0 0 0 !important;
+    text-align: center !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4) !important;
+    position: relative !important;
 }
 
 .header-rozet {
@@ -1057,6 +1059,8 @@ header h1, header h1 span {
     text-transform: uppercase !important;
     color: #ffffff !important;
     background: none !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
     -webkit-text-fill-color: #ffffff !important;
 }
 
@@ -1066,11 +1070,68 @@ header h1::after {
 }
 
 header p {
-    margin: 8px 0 45px 0 !important; /* İsme olan mesafeyi daralttık, menü boşluğunu koruduk */
-    font-size: 0.85rem !important; /* Okunabilirliği artırmak için yazıyı hafifçe büyüttük */
-    color: #94a3b8 !important; /* Karanlıkta parlaması için net bir açık gri tona geçtik */
-    font-weight: 500 !important; /* Harf çizgilerini biraz daha belirginleştirdik */
-    letter-spacing: 4px !important; /* Kelimelerin dağılmaması için harf aralığını yarıya indirdik */
+    margin: 8px 0 45px 0 !important;
+    font-size: 0.85rem !important;
+    color: #94a3b8 !important;
+    font-weight: 500 !important;
+    letter-spacing: 4px !important;
     text-transform: uppercase !important;
     opacity: 1 !important;
+}
+
+footer {
+    background: #090d16 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.footer-minimal h4 {
+    color: #ffffff !important;
+    font-size: 1.25rem !important;
+    letter-spacing: 6px !important;
+    text-transform: uppercase !important;
+    font-weight: 700 !important;
+}
+
+.footer-minimal p {
+    color: #64748b !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 4px !important;
+    text-transform: uppercase !important;
+    font-weight: 400 !important;
+    margin-top: 8px !important;
+}
+
+.footer-alt {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 15px !important;
+}
+
+.developer-credit {
+    font-size: 0.8rem !important;
+    color: #475569 !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.5px !important;
+    margin: 0 !important;
+}
+
+.developer-credit a {
+    color: #64748b !important;
+    text-decoration: none !important;
+    transition: color 0.25s ease !important;
+    font-weight: 600 !important;
+}
+
+.developer-credit a:hover {
+    color: #ff4500 !important;
+}
+
+@media (max-width: 768px) {
+    .footer-alt {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 10px !important;
+    }
 }
