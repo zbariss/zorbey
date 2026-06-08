@@ -1036,3 +1036,43 @@ nav ul li {
         letter-spacing: 0px;
     }
 }
+
+header {
+    background: #090d16 !important;
+    background-image: none !important;
+    border-top: 3px solid #ff4500 !important;
+    padding: 4.5rem 0 0 0 !important;
+}
+
+.header-rozet {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    color: #ff4500 !important;
+    letter-spacing: 3px !important;
+    font-size: 0.8rem !important;
+    box-shadow: none !important;
+}
+
+header h1, header h1 span {
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 5px !important;
+    font-size: 2.8rem !important;
+    color: #ffffff !important;
+    background: none !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+header h1::after {
+    content: none !important;
+    display: none !important;
+}
+
+header p {
+    margin: 15px 0 40px 0 !important;
+    font-size: 0.85rem !important;
+    color: #64748b !important;
+    letter-spacing: 6px !important;
+    text-transform: uppercase !important;
+}
