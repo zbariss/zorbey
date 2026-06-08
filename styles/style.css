@@ -1064,11 +1064,6 @@ header h1, header h1 span {
     letter-spacing: 10px !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
-    color: #ffffff !important;
-    background: none !important;
-    -webkit-background-clip: initial !important;
-    background-clip: initial !important;
-    -webkit-text-fill-color: #ffffff !important;
 }
 
 header h1::after {
@@ -1112,6 +1107,13 @@ footer {
     justify-content: center !important;
     text-align: center !important;
     width: 100% !important;
+}
+
+.footer-logo {
+    display: inline-block !important;
+    height: 85px !important;
+    width: auto !important;
+    margin-bottom: 15px !important;
 }
 
 .footer-minimal h4 {
