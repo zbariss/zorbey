@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
             girdiler.forEach(girdi => {
                 if (girdi.isIntersecting) {
                     sayacBaslat(girdi.target);
+                    gozlemci.unobserve(girdi.target); // İşte çakışmayı önleyen altın dokunuş!
                 }
             });
         }, { threshold: 0.1 });
