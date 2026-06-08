@@ -33,33 +33,60 @@ body {
 header {
     background: #0f172a;
     background-image: 
-        radial-gradient(at 50% 0%, rgba(255, 69, 0, 0.12) 0px, transparent 50%), 
-        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.06) 0px, transparent 40%);
+        radial-gradient(at 50% 0%, rgba(255, 69, 0, 0.15) 0px, transparent 50%), 
+        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.05) 0px, transparent 40%);
     color: #fff;
-    padding: 3.5rem 0 0 0;
+    padding: 4rem 0 0 0;
     text-align: center;
     box-shadow: 0 10px 40px rgba(15, 23, 42, 0.3);
     position: relative;
 }
 
+.header-rozet {
+    display: inline-block;
+    background: rgba(255, 69, 0, 0.1);
+    border: 1px solid rgba(255, 69, 0, 0.25);
+    color: #ff4500;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 18px;
+    max-width: 90%;
+    box-sizing: border-box;
+}
+
 header h1 {
     margin: 0;
-    font-size: 3rem;
-    letter-spacing: 3px;
+    font-size: 3.4rem;
+    letter-spacing: 1px;
+    font-weight: 300;
+    color: #ffffff;
+}
+
+header h1 span {
     font-weight: 800;
-    background: linear-gradient(135deg, #ffffff 30%, #e2e8f0 100%);
+    background: linear-gradient(135deg, #ffffff 60%, #94a3b8 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
+header h1::after {
+    content: '.';
+    color: #ff4500;
+}
+
 header p {
-    margin: 10px 0 30px 0;
-    font-size: 1.1rem;
+    margin: 12px 0 35px 0;
+    font-size: 0.85rem;
     color: #94a3b8;
     font-weight: 600;
-    letter-spacing: 2px;
+    letter-spacing: 5px;
     text-transform: uppercase;
+    opacity: 0.9;
 }
 
 nav {
