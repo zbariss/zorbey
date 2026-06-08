@@ -1198,6 +1198,39 @@ footer {
 }
 
 @media (max-width: 768px) {
+    header {
+        padding: 2rem 0 0 0 !important;
+    }
+    .header-logo {
+        height: 85px !important;
+        margin-bottom: 8px !important;
+    }
+    header h1, header h1 span {
+        font-size: 1.8rem !important;
+        letter-spacing: 6px !important;
+    }
+    header p {
+        font-size: 0.75rem !important;
+        letter-spacing: 2px !important;
+        padding: 0 15px !important;
+        margin: 8px 0 25px 0 !important;
+    }
+    nav ul {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 12px !important;
+        padding: 10px 0 !important;
+    }
+    nav ul li {
+        width: 100% !important;
+        text-align: center !important;
+    }
+    nav ul li a {
+        display: block !important;
+        padding: 6px 0 !important;
+        font-size: 0.95rem !important;
+    }
     .footer-alt {
         flex-direction: column !important;
         text-align: center !important;
