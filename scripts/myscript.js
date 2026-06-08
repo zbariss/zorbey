@@ -14,6 +14,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 document.addEventListener("DOMContentLoaded", function () {
+    // --- 1. SAYAÇ SİSTEMİ (IntersectionObserver) ---
     const sayacElementleri = document.querySelectorAll('.istatistik-kutu h3');
     if (sayacElementleri.length > 0) {
         const saymaSuresiMilisaniye = 1500;
@@ -52,22 +53,20 @@ document.addEventListener("DOMContentLoaded", function () {
         sayacElementleri.forEach(sayac => gozlemci.observe(sayac));
     }
 
+    // --- 2. KAYIT FORMU & FIREBASE ENTEGRASYONU ---
     const kayitFormu = document.querySelector('form[action="onay.html"]');
     if (kayitFormu) {
         kayitFormu.addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            alert("1. ADIM: Butona basıldı, JavaScript formu yakaladı!");
 
             const submitButon = kayitFormu.querySelector('button');
+            const orjinalButonMetni = submitButon.innerText;
             submitButon.innerText = "İşleniyor...";
             submitButon.disabled = true;
 
             const seciliPaketler = Array.from(document.querySelectorAll('input[name="paketler"]:checked')).map(p => p.value);
 
             try {
-                alert("2. ADIM: Veriler paketlendi. Firebase'e gönderim başlıyor... Eğer sistem burada asılı kalırsa projeyi Go Live ile açmamışsın demektir patron.");
-                
                 await addDoc(collection(db, "basvurular"), {
                     ad: document.getElementById('ad').value,
                     soyad: document.getElementById('soyad').value,
@@ -82,16 +81,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     kayitTarihi: serverTimestamp()
                 });
                 
-                alert("3. ADIM: Veri Firebase'e başarıyla yazıldı! Şimdi onay sayfasına yönlendiriliyorsunuz.");
                 window.location.href = "onay.html";
             } catch (error) {
-                alert("HATA YAKALANDI: " + error.message);
-                submitButon.innerText = "Ön Başvuruyu Tamamla";
+                console.error("Kayıt hatası:", error);
+                alert("Başvurunuz esnasında bir hata oluştu. Lütfen bilgilerinizi kontrol edip tekrar deneyiniz.");
+                submitButon.innerText = orjinalButonMetni;
                 submitButon.disabled = false;
             }
         });
     }
 
+    // --- 3. AKILLI PAKET SEÇİMİ ---
     const tumPaket = document.getElementById('paket-tum');
     const digerPaketler = [document.getElementById('paket-teorik'), document.getElementById('paket-kapali'), document.getElementById('paket-yol')];
 
