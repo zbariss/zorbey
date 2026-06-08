@@ -1070,7 +1070,7 @@ header h1::after {
 }
 
 header p {
-    margin: 8px 0 20px 0 !important;
+    margin: 12px 0 45px 0 !important;
     font-size: 0.85rem !important;
     color: #94a3b8 !important;
     font-weight: 500 !important;
