@@ -2,12 +2,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "...", // Kendi gerçek apiKey değerini buraya yapıştır patron
-  authDomain: "...", // Kendi gerçek authDomain değerini yapıştır
-  projectId: "...", // Kendi gerçek projectId değerini yapıştır
-  storageBucket: "...", // Kendi gerçek storageBucket değerini yapıştır
-  messagingSenderId: "...", // Kendi gerçek messagingSenderId değerini yapıştır
-  appId: "..." // Kendi gerçek appId değerini yapıştır
+  apiKey: "AIzaSyC4KTziZ6xDsB-2Lnovr1Fp9UC8hd1KWhE",
+  authDomain: "fatih-baris-akademi.firebaseapp.com",
+  projectId: "fatih-baris-akademi",
+  storageBucket: "fatih-baris-akademi.firebasestorage.app", 
+  messagingSenderId: "36408364342",
+  appId: "1:36408364342:web:e0988fae27e0f140117797"
 };
 
 const app = initializeApp(firebaseConfig);
