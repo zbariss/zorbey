@@ -1040,8 +1040,8 @@ nav ul li {
 header {
     background: #090d16 !important;
     background-image: none !important;
-    border-top: 3px solid #ff4500 !important;
-    padding: 4.5rem 0 0 0 !important;
+    border-top: none !important; /* Turuncu çizgiyi kökten sildik */
+    padding: 5rem 0 0 0 !important; /* Alana nefes aldırdık */
 }
 
 .header-rozet {
@@ -1049,16 +1049,18 @@ header {
     border: none !important;
     padding: 0 !important;
     color: #ff4500 !important;
-    letter-spacing: 3px !important;
-    font-size: 0.8rem !important;
+    letter-spacing: 4px !important; /* Rozet harflerini açtık */
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
     box-shadow: none !important;
+    margin-bottom: 20px !important;
 }
 
 header h1, header h1 span {
     font-weight: 700 !important;
     text-transform: uppercase !important;
-    letter-spacing: 5px !important;
-    font-size: 2.8rem !important;
+    letter-spacing: 8px !important; /* İsmi yayarak lüks marka algısı yarattık */
+    font-size: 2.2rem !important; /* Boyutu kibarlaştırdık */
     color: #ffffff !important;
     background: none !important;
     -webkit-text-fill-color: #ffffff !important;
@@ -1070,9 +1072,9 @@ header h1::after {
 }
 
 header p {
-    margin: 15px 0 40px 0 !important;
-    font-size: 0.85rem !important;
-    color: #64748b !important;
-    letter-spacing: 6px !important;
+    margin: 18px 0 45px 0 !important;
+    font-size: 0.8rem !important; /* Unvanı daha kurumsal ve minimal yaptık */
+    color: #475569 !important;
+    letter-spacing: 5px !important;
     text-transform: uppercase !important;
 }
