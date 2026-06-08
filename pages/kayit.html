@@ -99,34 +99,7 @@
         </div>
     </main>
 
-    <script>
-        const tumPaket = document.getElementById('paket-tum');
-        const teorikPaket = document.getElementById('paket-teorik');
-        const kapaliPaket = document.getElementById('paket-kapali');
-        const yolPaket = document.getElementById('paket-yol');
-
-        function paketYonetimi(e) {
-            if (e.target === tumPaket && tumPaket.checked) {
-                teorikPaket.checked = false;
-                kapaliPaket.checked = false;
-                yolPaket.checked = false;
-            } else if (e.target !== tumPaket) {
-                if (teorikPaket.checked && kapaliPaket.checked && yolPaket.checked) {
-                    tumPaket.checked = true;
-                    teorikPaket.checked = false;
-                    kapaliPaket.checked = false;
-                    yolPaket.checked = false;
-                } else if (teorikPaket.checked || kapaliPaket.checked || yolPaket.checked) {
-                    tumPaket.checked = false;
-                }
-            }
-        }
-
-        tumPaket.addEventListener('change', paketYonetimi);
-        teorikPaket.addEventListener('change', paketYonetimi);
-        kapaliPaket.addEventListener('change', paketYonetimi);
-        yolPaket.addEventListener('change', paketYonetimi);
-    </script>
+    <script src="../myscript.js"></script>
     <footer>
         <div class="footer-minimal">
             <img src="../img/moto-logo.png" class="footer-logo" alt="Logo">

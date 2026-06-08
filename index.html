@@ -101,57 +101,6 @@
             <p class="developer-credit">Design & Development by <a href="https://github.com/zbariss" target="_blank">Zorbey Hacı BARIŞ</a></p>
         </div>
     </footer>
-    <script>
-        const sayacElementleri = document.querySelectorAll('.istatistik-kutu h3');
-        const saymaSuresiMilisaniye = 1500;
-
-        // Sayfa ilk yüklendiğinde gerçek kurumsal hedefleri tarayıcı hafızasına mühürlüyoruz
-        sayacElementleri.forEach(el => {
-            if (!el.dataset.orjinal) {
-                el.dataset.orjinal = el.innerText;
-            }
-        });
-
-        const sayacBaslat = (element) => {
-            // Hedefi ekrandan değil, mühürlediğimiz gizli hafızadan okuyoruz (Asla bozulmaz)
-            const hamMetin = element.dataset.orjinal;
-            const hedefSayiString = hamMetin.replace(/[^0-9]/g, '');
-            const metinEki = hamMetin.replace(/[0-9.]/g, ''); 
-            
-            const hedefSayi = parseInt(hedefSayiString);
-            if (isNaN(hedefSayi)) return;
-
-            const baslangicZamani = performance.now();
-            
-            const animasyonAdimi = (suankiZaman) => {
-                const gecenSure = suankiZaman - baslangicZamani;
-                
-                let ilerleme = gecenSure / saymaSuresiMilisaniye;
-                if (ilerleme > 1) ilerleme = 1;
-                
-                const easeOutIlerleme = 1 - Math.pow(1 - ilerleme, 2); 
-                
-                const suankiDeger = Math.floor(easeOutIlerleme * hedefSayi);
-                const formatliDeger = suankiDeger.toLocaleString('tr-TR');
-                element.innerText = formatliDeger + metinEki;
-                
-                if (ilerleme < 1) {
-                    requestAnimationFrame(animasyonAdimi);
-                }
-            };
-            
-            requestAnimationFrame(animasyonAdimi);
-        };
-
-        const gözlemci = new IntersectionObserver((girdiler) => {
-            girdiler.forEach(girdi => {
-                if (girdi.isIntersecting) {
-                    sayacBaslat(girdi.target);
-                }
-            });
-        }, { threshold: 0.1 }); // Ekrana ufacık bile girse takılmadan stabil çalışması için hassasiyeti artırdık
-
-        sayacElementleri.forEach(sayac => gözlemci.observe(sayac));
-    </script>
+    <script src="myscript.js"></script>
 </body>
 </html>
