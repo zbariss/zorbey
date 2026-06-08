@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { 
     getFirestore, collection, addDoc, serverTimestamp, 
-    query, orderBy, onSnapshot, doc, updateDoc, deleteDoc 
+    query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, getDoc, setDoc
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { 
     getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut 
@@ -202,6 +202,55 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('stat-beklemede').innerText = countBeklemede;
             document.getElementById('stat-arandi').innerText = countArandi;
             document.getElementById('stat-onaylandi').innerText = countOnaylandi;
+        });
+    }
+
+    const fiyatFormu = document.getElementById('admin-fiyat-form');
+    if (fiyatFormu) {
+        onSnapshot(doc(db, "ayarlar", "fiyatlar"), (docSnap) => {
+            if (docSnap.exists()) {
+                const veriler = docSnap.data();
+                document.getElementById('fiyat-input-teorik').value = veriler.teorik || "";
+                document.getElementById('fiyat-input-kapali').value = veriler.kapali || "";
+                document.getElementById('fiyat-input-yol').value = veriler.yol || "";
+                document.getElementById('fiyat-input-tum').value = veriler.tum || "";
+            }
+        });
+
+        fiyatFormu.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const btn = fiyatFormu.querySelector('button');
+            btn.innerText = "Kaydediliyor...";
+            btn.disabled = true;
+
+            try {
+                await setDoc(doc(db, "ayarlar", "fiyatlar"), {
+                    teorik: document.getElementById('fiyat-input-teorik').value,
+                    kapali: document.getElementById('fiyat-input-kapali').value,
+                    yol: document.getElementById('fiyat-input-yol').value,
+                    tum: document.getElementById('fiyat-input-tum').value
+                });
+                alert("Fiyatlar başarıyla güncellendi patron!");
+            } catch (error) {
+                console.error("Fiyat güncelleme hatası:", error);
+                alert("Fiyatlar kaydedilirken hata oluştu.");
+            } finally {
+                btn.innerText = "Fiyatları Güncelle";
+                btn.disabled = false;
+            }
+        });
+    }
+
+    const gosterTeorik = document.getElementById('goster-fiyat-teorik');
+    if (gosterTeorik) {
+        onSnapshot(doc(db, "ayarlar", "fiyatlar"), (docSnap) => {
+            if (docSnap.exists()) {
+                const veriler = docSnap.data();
+                document.getElementById('goster-fiyat-teorik').innerText = veriler.teorik + " TL";
+                document.getElementById('goster-fiyat-kapali').innerText = veriler.kapali + " TL";
+                document.getElementById('goster-fiyat-yol').innerText = veriler.yol + " TL";
+                document.getElementById('goster-fiyat-tum').innerText = veriler.tum + " TL";
+            }
         });
     }
 

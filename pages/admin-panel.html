@@ -135,6 +135,7 @@
             padding: 25px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
             overflow-x: auto;
+            margin-bottom: 30px;
         }
         .table-responsive {
             width: 100%;
@@ -186,6 +187,27 @@
         .action-btn:hover {
             border-color: #ff4500;
             color: #ff4500;
+        }
+        .config-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            align-items: flex-end;
+        }
+        .config-form input {
+            width: 100%;
+            padding: 10px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+        }
+        .config-form label {
+            color: #94a3b8;
+            font-size: 13px;
+            display: block;
+            margin-bottom: 5px;
         }
         @media (max-width: 992px) {
             .admin-body { flex-direction: column; }
@@ -251,6 +273,29 @@
                     <p>Onaylanan</p>
                 </div>
             </div>
+        </div>
+
+        <div class="data-card">
+            <h2 style="color: #ffffff; font-size: 18px; margin-top: 0; margin-bottom: 15px;">Eğitim Paketi Fiyat Ayarları</h2>
+            <form id="admin-fiyat-form" class="config-form">
+                <div>
+                    <label>Teorik Eğitim Paket Fiyatı</label>
+                    <input type="text" id="fiyat-input-teorik" required>
+                </div>
+                <div>
+                    <label>Kapalı Alan Paket Fiyatı</label>
+                    <input type="text" id="fiyat-input-kapali" required>
+                </div>
+                <div>
+                    <label>Yol Sürüşü Paket Fiyatı</label>
+                    <input type="text" id="fiyat-input-yol" required>
+                </div>
+                <div>
+                    <label>Tüm Paketler Kampanya Fiyatı</label>
+                    <input type="text" id="fiyat-input-tum" required>
+                </div>
+                <button type="submit" class="action-btn" style="background: #ff4500; color: #ffffff; border: none; font-weight: 600; height: 38px;">Fiyatları Güncelle</button>
+            </form>
         </div>
 
         <div class="data-card">
