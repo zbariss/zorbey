@@ -5,7 +5,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyC4KTziZ6xDsB-2Lnovr1Fp9UC8hd1KWhE",
   authDomain: "fatih-baris-akademi.firebaseapp.com",
   projectId: "fatih-baris-akademi",
-  storageBucket: "fatih-baris-akademi.firebasestorage.app", 
+  storageBucket: "fatih-baris-akademi.firebasestorage.app",
   messagingSenderId: "36408364342",
   appId: "1:36408364342:web:e0988fae27e0f140117797"
 };
@@ -56,35 +56,37 @@ document.addEventListener("DOMContentLoaded", function () {
     if (kayitFormu) {
         kayitFormu.addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            alert("1. ADIM: Butona basıldı, JavaScript formu yakaladı!");
 
             const submitButon = kayitFormu.querySelector('button');
-            const orjinalButonMetni = submitButon.innerText;
             submitButon.innerText = "İşleniyor...";
             submitButon.disabled = true;
 
             const seciliPaketler = Array.from(document.querySelectorAll('input[name="paketler"]:checked')).map(p => p.value);
 
-            const kursiyerVerisi = {
-                ad: document.getElementById('ad').value,
-                soyad: document.getElementById('soyad').value,
-                yas: document.getElementById('yas').value,
-                telefon: document.getElementById('telefon').value,
-                meslek: document.getElementById('meslek').value,
-                motosiklet: document.getElementById('motosiklet').value,
-                tecrube: document.getElementById('tecrube').value,
-                paketler: seciliPaketler,
-                neden: document.getElementById('neden').value,
-                durum: "beklemede",
-                kayitTarihi: serverTimestamp()
-            };
-
             try {
-                await addDoc(collection(db, "basvurular"), kursiyerVerisi);
+                alert("2. ADIM: Veriler paketlendi. Firebase'e gönderim başlıyor... Eğer sistem burada asılı kalırsa projeyi Go Live ile açmamışsın demektir patron.");
+                
+                await addDoc(collection(db, "basvurular"), {
+                    ad: document.getElementById('ad').value,
+                    soyad: document.getElementById('soyad').value,
+                    yas: document.getElementById('yas').value,
+                    telefon: document.getElementById('telefon').value,
+                    meslek: document.getElementById('meslek').value,
+                    motosiklet: document.getElementById('motosiklet').value,
+                    tecrube: document.getElementById('tecrube').value,
+                    paketler: seciliPaketler,
+                    neden: document.getElementById('neden').value,
+                    durum: "beklemede",
+                    kayitTarihi: serverTimestamp()
+                });
+                
+                alert("3. ADIM: Veri Firebase'e başarıyla yazıldı! Şimdi onay sayfasına yönlendiriliyorsunuz.");
                 window.location.href = "onay.html";
             } catch (error) {
-                console.error("Kayıt hatası:", error);
-                alert("Bir hata oluştu, lütfen tekrar deneyiniz.");
-                submitButon.innerText = orjinalButonMetni;
+                alert("HATA YAKALANDI: " + error.message);
+                submitButon.innerText = "Ön Başvuruyu Tamamla";
                 submitButon.disabled = false;
             }
         });
