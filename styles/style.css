@@ -1041,10 +1041,17 @@ header {
     background: #090d16 !important;
     background-image: none !important;
     border-top: none !important;
-    padding: 5rem 0 0 0 !important;
+    padding: 4rem 0 0 0 !important;
     text-align: center !important;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4) !important;
     position: relative !important;
+}
+
+.header-logo {
+    display: inline-block !important;
+    height: 95px !important;
+    width: auto !important;
+    margin-bottom: 15px !important;
 }
 
 .header-rozet {
