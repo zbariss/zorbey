@@ -1136,18 +1136,18 @@ footer {
     width: 100% !important;
 }
 
-.footer-ikon {
+.footer-ikon, .footer-icon {
     color: #ffffff !important;
     font-size: 1.6rem !important;
     transition: color 0.3s ease !important;
 }
 
-.footer-sosyal a:hover .insta-ikon {
-    color: #e1306c !important;
+.wp-icon:hover, .wp-ikon:hover, .footer-sosyal a:hover .wp-icon, .footer-sosyal a:hover .wp-ikon {
+    color: #25d366 !important;
 }
 
-.footer-sosyal a:hover .wp-ikon {
-    color: #25d366 !important;
+.insta-icon:hover, .insta-ikon:hover, .footer-sosyal a:hover .insta-icon, .footer-sosyal a:hover .insta-ikon {
+    color: #e1306c !important;
 }
 
 .footer-alt {
