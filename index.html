@@ -102,8 +102,16 @@
         const sayacElementleri = document.querySelectorAll('.istatistik-kutu h3');
         const saymaSuresiMilisaniye = 1500;
 
+        // Sayfa ilk yüklendiğinde gerçek kurumsal hedefleri tarayıcı hafızasına mühürlüyoruz
+        sayacElementleri.forEach(el => {
+            if (!el.dataset.orjinal) {
+                el.dataset.orjinal = el.innerText;
+            }
+        });
+
         const sayacBaslat = (element) => {
-            const hamMetin = element.innerText;
+            // Hedefi ekrandan değil, mühürlediğimiz gizli hafızadan okuyoruz (Asla bozulmaz)
+            const hamMetin = element.dataset.orjinal;
             const hedefSayiString = hamMetin.replace(/[^0-9]/g, '');
             const metinEki = hamMetin.replace(/[0-9.]/g, ''); 
             
@@ -138,7 +146,7 @@
                     sayacBaslat(girdi.target);
                 }
             });
-        }, { threshold: 0.5 });
+        }, { threshold: 0.1 }); // Ekrana ufacık bile girse takılmadan stabil çalışması için hassasiyeti artırdık
 
         sayacElementleri.forEach(sayac => gözlemci.observe(sayac));
     </script>
