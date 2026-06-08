@@ -1081,7 +1081,19 @@ header p {
 
 footer {
     background: #090d16 !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-top: none !important;
+    padding: 50px 20px 30px 20px !important;
+    margin-top: 60px !important;
+    text-align: center !important;
+}
+
+.footer-minimal {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
 }
 
 .footer-minimal h4 {
@@ -1090,6 +1102,8 @@ footer {
     letter-spacing: 6px !important;
     text-transform: uppercase !important;
     font-weight: 700 !important;
+    margin: 0 0 12px 0 !important;
+    text-align: center !important;
 }
 
 .footer-minimal p {
@@ -1098,22 +1112,57 @@ footer {
     letter-spacing: 4px !important;
     text-transform: uppercase !important;
     font-weight: 400 !important;
-    margin-top: 8px !important;
+    margin: 0 0 30px 0 !important;
+    text-align: center !important;
+}
+
+.footer-sosyal {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 30px !important;
+    margin-bottom: 30px !important;
+    width: 100% !important;
+}
+
+.footer-ikon {
+    color: #ffffff !important;
+    font-size: 1.6rem !important;
+    transition: color 0.3s ease !important;
+}
+
+.footer-sosyal a:hover .insta-ikon {
+    color: #e1306c !important;
+}
+
+.footer-sosyal a:hover .wp-ikon {
+    color: #25d366 !important;
 }
 
 .footer-alt {
+    border-top: 1px solid rgba(255, 255, 255, 0.03) !important;
+    padding-top: 25px !important;
+    margin-top: 10px !important;
     display: flex !important;
-    flex-wrap: wrap !important;
     justify-content: space-between !important;
     align-items: center !important;
     gap: 15px !important;
+    width: 100% !important;
+    max-width: 1100px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.footer-alt p {
+    color: #475569 !important;
+    font-size: 0.75rem !important;
+    margin: 0 !important;
 }
 
 .developer-credit {
-    font-size: 0.8rem !important;
+    font-size: 0.75rem !important;
     color: #475569 !important;
     font-weight: 500 !important;
-    letter-spacing: 0.5px !important;
     margin: 0 !important;
 }
 
