@@ -143,14 +143,28 @@ document.addEventListener("DOMContentLoaded", function () {
         onSnapshot(q, (snapshot) => {
             if (snapshot.empty) {
                 tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">Henüz hiç başvuru bulunmuyor patron.</td></tr>`;
+                document.getElementById('stat-toplam').innerText = "0";
+                document.getElementById('stat-beklemede').innerText = "0";
+                document.getElementById('stat-arandi').innerText = "0";
+                document.getElementById('stat-onaylandi').innerText = "0";
                 return;
             }
 
             let htmlIcerik = "";
+            let countToplam = 0;
+            let countBeklemede = 0;
+            let countArandi = 0;
+            let countOnaylandi = 0;
+
             snapshot.forEach((docSnap) => {
                 const veri = docSnap.data();
                 const id = docSnap.id;
                 const paketMetni = veri.paketler && veri.paketler.length > 0 ? veri.paketler.join(", ") : "Seçim Yok";
+
+                countToplam++;
+                if (veri.durum === "beklemede") countBeklemede++;
+                else if (veri.durum === "arandi") countArandi++;
+                else if (veri.durum === "onaylandi") countOnaylandi++;
 
                 htmlIcerik += `
                     <tr>
@@ -182,7 +196,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     </tr>
                 `;
             });
+            
             tabloGovdesi.innerHTML = htmlIcerik;
+            document.getElementById('stat-toplam').innerText = countToplam;
+            document.getElementById('stat-beklemede').innerText = countBeklemede;
+            document.getElementById('stat-arandi').innerText = countArandi;
+            document.getElementById('stat-onaylandi').innerText = countOnaylandi;
         });
     }
 

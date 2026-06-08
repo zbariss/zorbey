@@ -15,7 +15,6 @@
             min-height: 100vh;
             color: #f1f5f9;
         }
-        /* SOL MENÜ (SIDEBAR) */
         .sidebar {
             width: 260px;
             background: #1e293b;
@@ -62,7 +61,6 @@
             background: #ff4500;
             color: #ffffff;
         }
-        /* SAĞ İÇERİK ALANI (MAIN CONTENT) */
         .main-content {
             margin-left: 260px;
             flex-grow: 1;
@@ -91,7 +89,45 @@
             color: #ff4500;
             font-size: 20px;
         }
-        /* VERİ TABLOSU KART YAPISI */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stats-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .stats-icon {
+            font-size: 28px;
+            width: 50px;
+            height: 50px;
+            background: #0f172a;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #334155;
+        }
+        .stats-card h3 {
+            font-size: 24px;
+            color: #ffffff;
+            margin: 0;
+            font-weight: 700;
+        }
+        .stats-card p {
+            color: #94a3b8;
+            font-size: 13px;
+            margin: 2px 0 0 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
         .data-card {
             background: #1e293b;
             border: 1px solid #334155;
@@ -126,7 +162,6 @@
         .admin-table tr:hover {
             background: rgba(255, 69, 0, 0.05);
         }
-        /* DURUM ETİKETLERİ */
         .status-badge {
             padding: 5px 12px;
             border-radius: 30px;
@@ -138,8 +173,6 @@
         .status-beklemede { background: rgba(234, 179, 8, 0.15); color: #eab308; }
         .status-arandi { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
         .status-onaylandi { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
-        
-        /* AKSİYON BUTONLARI */
         .action-btn {
             background: #0f172a;
             border: 1px solid #334155;
@@ -154,8 +187,6 @@
             border-color: #ff4500;
             color: #ff4500;
         }
-        
-        /* MOBİL UYUMLULUK */
         @media (max-width: 992px) {
             .admin-body { flex-direction: column; }
             .sidebar { width: 100%; height: auto; position: relative; padding: 20px; }
@@ -174,7 +205,7 @@
             <li class="active">
                 <a href="#"><i class="fa-solid fa-users"></i> Kursiyer Başvuruları</a>
             </li>
-            </ul>
+        </ul>
         <div class="sidebar-footer">
             <a href="#" id="admin-logout-btn" style="color: #ef4444; text-decoration: none; display: flex; align-items: center; gap: 10px; font-weight: 500;">
                 <i class="fa-solid fa-right-from-bracket"></i> Oturumu Kapat
@@ -188,6 +219,37 @@
             <div class="user-info">
                 <i class="fa-solid fa-user-gear"></i>
                 <span>Hoş geldin, Patron Zorbey</span>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stats-card">
+                <div class="stats-icon" style="color: #ff4500;"><i class="fa-solid fa-folder-open"></i></div>
+                <div>
+                    <h3 id="stat-toplam">0</h3>
+                    <p>Toplam</p>
+                </div>
+            </div>
+            <div class="stats-card">
+                <div class="stats-icon" style="color: #eab308;"><i class="fa-solid fa-hourglass-half"></i></div>
+                <div>
+                    <h3 id="stat-beklemede">0</h3>
+                    <p>Bekleyen</p>
+                </div>
+            </div>
+            <div class="stats-card">
+                <div class="stats-icon" style="color: #3b82f6;"><i class="fa-solid fa-phone"></i></div>
+                <div>
+                    <h3 id="stat-arandi">0</h3>
+                    <p>Aranan</p>
+                </div>
+            </div>
+            <div class="stats-card">
+                <div class="stats-icon" style="color: #22c55e;"><i class="fa-solid fa-circle-check"></i></div>
+                <div>
+                    <h3 id="stat-onaylandi">0</h3>
+                    <p>Onaylanan</p>
+                </div>
             </div>
         </div>
 
