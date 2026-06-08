@@ -1,5 +1,11 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { 
+    getFirestore, collection, addDoc, serverTimestamp, 
+    query, orderBy, onSnapshot, doc, updateDoc, deleteDoc 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { 
+    getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC4KTziZ6xDsB-2Lnovr1Fp9UC8hd1KWhE",
@@ -12,9 +18,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 document.addEventListener("DOMContentLoaded", function () {
-    // --- 1. SAYAÇ SİSTEMİ (IntersectionObserver) ---
     const sayacElementleri = document.querySelectorAll('.istatistik-kutu h3');
     if (sayacElementleri.length > 0) {
         const saymaSuresiMilisaniye = 1500;
@@ -53,12 +59,10 @@ document.addEventListener("DOMContentLoaded", function () {
         sayacElementleri.forEach(sayac => gozlemci.observe(sayac));
     }
 
-    // --- 2. KAYIT FORMU & FIREBASE ENTEGRASYONU ---
     const kayitFormu = document.querySelector('form[action="onay.html"]');
     if (kayitFormu) {
         kayitFormu.addEventListener('submit', async function(e) {
             e.preventDefault();
-
             const submitButon = kayitFormu.querySelector('button');
             const orjinalButonMetni = submitButon.innerText;
             submitButon.innerText = "İşleniyor...";
@@ -80,18 +84,108 @@ document.addEventListener("DOMContentLoaded", function () {
                     durum: "beklemede",
                     kayitTarihi: serverTimestamp()
                 });
-                
                 window.location.href = "onay.html";
             } catch (error) {
                 console.error("Kayıt hatası:", error);
-                alert("Başvurunuz esnasında bir hata oluştu. Lütfen bilgilerinizi kontrol edip tekrar deneyiniz.");
+                alert("Başvuru alınırken bir hata oluştu.");
                 submitButon.innerText = orjinalButonMetni;
                 submitButon.disabled = false;
             }
         });
     }
 
-    // --- 3. AKILLI PAKET SEÇİMİ ---
+    const loginForm = document.getElementById('admin-login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const sifre = document.getElementById('login-password').value;
+            const btn = loginForm.querySelector('button');
+            
+            btn.innerText = "Doğrulanıyor...";
+            btn.disabled = true;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, sifre);
+                window.location.href = "admin-panel.html";
+            } catch (error) {
+                alert("Giriş Başarısız: Hatalı kullanıcı adı veya şifre patron.");
+                btn.innerText = "Giriş Yap";
+                btn.disabled = false;
+            }
+        });
+    }
+
+    const logoutBtn = document.getElementById('admin-logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            signOut(auth).then(() => {
+                window.location.href = "admin-login.html";
+            });
+        });
+    }
+
+    onAuthStateChanged(auth, (user) => {
+        const suankiSayfa = window.location.pathname;
+        if (suankiSayfa.includes("admin-panel.html") && !user) {
+            window.location.href = "admin-login.html";
+        }
+        if (suankiSayfa.includes("admin-login.html") && user) {
+            window.location.href = "admin-panel.html";
+        }
+    });
+
+    const tabloGovdesi = document.getElementById('basvuru-tablo-govdesi');
+    if (tabloGovdesi) {
+        const q = query(collection(db, "basvurular"), orderBy("kayitTarihi", "desc"));
+        
+        onSnapshot(q, (snapshot) => {
+            if (snapshot.empty) {
+                tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">Henüz hiç başvuru bulunmuyor patron.</td></tr>`;
+                return;
+            }
+
+            let htmlIcerik = "";
+            snapshot.forEach((docSnap) => {
+                const veri = docSnap.data();
+                const id = docSnap.id;
+                const paketMetni = veri.paketler && veri.paketler.length > 0 ? veri.paketler.join(", ") : "Seçim Yok";
+
+                htmlIcerik += `
+                    <tr>
+                        <td>
+                            <b>${veri.ad} ${veri.soyad}</b><br>
+                            <small style="color: #64748b;">Yaş: ${veri.yas} | ${veri.meslek}</small>
+                        </td>
+                        <td>
+                            <a href="tel:${veri.telefon}" style="color: #ff4500; text-decoration: none; font-weight: 500;">
+                                <i class="fa-solid fa-phone"></i> ${veri.telefon}
+                            </a>
+                        </td>
+                        <td>
+                            <b>${veri.motosiklet}</b><br>
+                            <small style="color: #64748b;">Tecrübe: ${veri.tecrube}</small>
+                        </td>
+                        <td><span style="color: #ffffff; font-size: 14px;">${paketMetni}</span></td>
+                        <td><span class="status-badge status-${veri.durum}">${veri.durum}</span></td>
+                        <td>
+                            <select class="action-btn" onchange="durumDegistir('${id}', this.value)">
+                                <option value="beklemede" ${veri.durum === 'beklemede' ? 'selected' : ''}>Beklemede</option>
+                                <option value="arandi" ${veri.durum === 'arandi' ? 'selected' : ''}>Arandı</option>
+                                <option value="onaylandi" ${veri.durum === 'onaylandi' ? 'selected' : ''}>Onaylandı</option>
+                            </select>
+                            <button class="action-btn" onclick="basvuruSil('${id}')" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.2); margin-left: 5px;">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tabloGovdesi.innerHTML = htmlIcerik;
+        });
+    }
+
     const tumPaket = document.getElementById('paket-tum');
     const digerPaketler = [document.getElementById('paket-teorik'), document.getElementById('paket-kapali'), document.getElementById('paket-yol')];
 
@@ -112,3 +206,22 @@ document.addEventListener("DOMContentLoaded", function () {
         [tumPaket, ...digerPaketler].forEach(p => p.addEventListener('change', paketYonetimi));
     }
 });
+
+window.durumDegistir = async function(id, yeniDurum) {
+    try {
+        const basvuruRef = doc(db, "basvurular", id);
+        await updateDoc(basvuruRef, { durum: yeniDurum });
+    } catch (error) {
+        console.error("Durum güncellenirken hata:", error);
+    }
+};
+
+window.basvuruSil = async function(id) {
+    if (confirm("Bu kursiyer kaydını kalıcı olarak silmek istediğine emin misin patron?")) {
+        try {
+            await deleteDoc(doc(db, "basvurular", id));
+        } catch (error) {
+            console.error("Kayıt silinirken hata:", error);
+        }
+    }
+};
