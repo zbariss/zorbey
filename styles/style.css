@@ -1066,10 +1066,11 @@ header h1::after {
 }
 
 header p {
-    margin: 18px 0 45px 0 !important;
-    font-size: 0.75rem !important;
-    color: #64748b !important;
-    font-weight: 300 !important;
-    letter-spacing: 8px !important;
+    margin: 8px 0 45px 0 !important; /* İsme olan mesafeyi daralttık, menü boşluğunu koruduk */
+    font-size: 0.85rem !important; /* Okunabilirliği artırmak için yazıyı hafifçe büyüttük */
+    color: #94a3b8 !important; /* Karanlıkta parlaması için net bir açık gri tona geçtik */
+    font-weight: 500 !important; /* Harf çizgilerini biraz daha belirginleştirdik */
+    letter-spacing: 4px !important; /* Kelimelerin dağılmaması için harf aralığını yarıya indirdik */
     text-transform: uppercase !important;
+    opacity: 1 !important;
 }
