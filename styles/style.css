@@ -1083,13 +1083,20 @@ header p {
 
 nav {
     margin-top: 0 !important;
-    padding-top: 15px !important;
-    padding-bottom: 15px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    background: rgba(255, 255, 255, 0.01) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.02) !important;
 }
 
 nav ul {
     margin: 0 !important;
     padding: 0 !important;
+}
+
+nav ul li a {
+    letter-spacing: 1px !important;
+    transition: all 0.3s ease !important;
 }
 
 footer {
@@ -1123,7 +1130,6 @@ footer {
     text-transform: uppercase !important;
     font-weight: 700 !important;
     margin: 0 0 12px 0 !important;
-    text-align: center !important;
 }
 
 .footer-minimal p {
@@ -1133,7 +1139,6 @@ footer {
     text-transform: uppercase !important;
     font-weight: 400 !important;
     margin: 0 0 30px 0 !important;
-    text-align: center !important;
 }
 
 .footer-sosyal {
@@ -1213,23 +1218,32 @@ footer {
         font-size: 0.75rem !important;
         letter-spacing: 2px !important;
         padding: 0 15px !important;
-        margin: 8px 0 25px 0 !important;
+        margin: 8px 0 20px 0 !important;
+    }
+    nav {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
     }
     nav ul {
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-        gap: 12px !important;
-        padding: 10px 0 !important;
+        gap: 0 !important; /* Çizgiler tam otursun diye gap sıfırlandı */
+        padding: 0 20px !important;
     }
     nav ul li {
         width: 100% !important;
         text-align: center !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important; /* Minimal modern ayraç çizgisi */
+    }
+    nav ul li:last-child {
+        border-bottom: none !important; /* En alttaki elemanın altına çizgi koymuyoruz */
     }
     nav ul li a {
         display: block !important;
-        padding: 6px 0 !important;
+        padding: 12px 0 !important; /* Parmakla rahat basılması için hit-box genişletildi */
         font-size: 0.95rem !important;
+        letter-spacing: 1.5px !important;
     }
     .footer-alt {
         flex-direction: column !important;
