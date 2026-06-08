@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetim Paneli | Fatih Barış Akademi</title>
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .admin-body {
+            background-color: #0f172a;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            min-height: 100vh;
+            color: #f1f5f9;
+        }
+        /* SOL MENÜ (SIDEBAR) */
+        .sidebar {
+            width: 260px;
+            background: #1e293b;
+            border-right: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            position: fixed;
+            height: 100vh;
+        }
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .sidebar-header h3 {
+            color: #ffffff;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        .sidebar-header span {
+            color: #ff4500;
+        }
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .sidebar-menu a:hover, .sidebar-menu li.active a {
+            background: #ff4500;
+            color: #ffffff;
+        }
+        /* SAĞ İÇERİK ALANI (MAIN CONTENT) */
+        .main-content {
+            margin-left: 260px;
+            flex-grow: 1;
+            padding: 40px;
+            background: #0f172a;
+        }
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 20px;
+        }
+        .main-header h1 {
+            font-size: 28px;
+            color: #ffffff;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+        .user-info i {
+            color: #ff4500;
+            font-size: 20px;
+        }
+        /* VERİ TABLOSU KART YAPISI */
+        .data-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+            overflow-x: auto;
+        }
+        .table-responsive {
+            width: 100%;
+        }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        .admin-table th {
+            padding: 15px;
+            border-bottom: 2px solid #334155;
+            color: #ff4500;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+        .admin-table td {
+            padding: 15px;
+            border-bottom: 1px solid #334155;
+            color: #cbd5e1;
+            font-size: 15px;
+            vertical-align: middle;
+        }
+        .admin-table tr:hover {
+            background: rgba(255, 69, 0, 0.05);
+        }
+        /* DURUM ETİKETLERİ */
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+        .status-beklemede { background: rgba(234, 179, 8, 0.15); color: #eab308; }
+        .status-arandi { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+        .status-onaylandi { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+        
+        /* AKSİYON BUTONLARI */
+        .action-btn {
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #94a3b8;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 13px;
+        }
+        .action-btn:hover {
+            border-color: #ff4500;
+            color: #ff4500;
+        }
+        
+        /* MOBİL UYUMLULUK */
+        @media (max-width: 992px) {
+            .admin-body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: relative; padding: 20px; }
+            .main-content { margin-left: 0; padding: 20px; }
+        }
+    </style>
+</head>
+<body class="admin-body">
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div style="font-size: 35px; color: #ff4500;"><i class="fa-solid fa-motorcycle"></i></div>
+            <h3>FBA <span>Karargah</span></h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="active">
+                <a href="#"><i class="fa-solid fa-users"></i> Kursiyer Başvuruları</a>
+            </li>
+            </ul>
+        <div class="sidebar-footer">
+            <a href="#" id="admin-logout-btn" style="color: #ef4444; text-decoration: none; display: flex; align-items: center; gap: 10px; font-weight: 500;">
+                <i class="fa-solid fa-right-from-bracket"></i> Oturumu Kapat
+            </a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="main-header">
+            <h1>Kursiyer Başvuru Yönetimi</h1>
+            <div class="user-info">
+                <i class="fa-solid fa-user-gear"></i>
+                <span>Hoş geldin, Patron Zorbey</span>
+            </div>
+        </div>
+
+        <div class="data-card">
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Kursiyer</th>
+                            <th>İletişim</th>
+                            <th>Motosiklet / Tecrübe</th>
+                            <th>İstenen Eğitim</th>
+                            <th>Durum</th>
+                            <th>Aksiyon</th>
+                        </tr>
+                    </thead>
+                    <tbody id="basvuru-tablo-govdesi">
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">
+                                <i class="fa-solid fa-spinner fa-spin" style="margin-right: 10px;"></i> Veriler buluttan yükleniyor...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../scripts/myscript.js"></script>
+</body>
+</html>
