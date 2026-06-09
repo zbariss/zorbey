@@ -329,12 +329,17 @@
                 <div style="flex: 1; min-width: 200px;">
                     <input type="text" id="admin-arama-input" placeholder="Kursiyer adı veya telefon numarası ara..." style="width: 100%; padding: 10px 15px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #ffffff; font-size: 14px;">
                 </div>
-                <div style="width: 180px;">
+                <div style="width: 200px;">
                     <select id="admin-durum-filtre" style="width: 100%; padding: 10px 15px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #ffffff; font-size: 14px; cursor: pointer;">
-                        <option value="hepsi">Tüm Durumlar</option>
+                        <option value="aktif">Aktif Başvurular</option>
+                        <option value="hepsi">Tüm Kayıtlar (Arşiv Dahil)</option>
                         <option value="beklemede">Beklemede</option>
                         <option value="arandi">Arandı</option>
+                        <option value="kapora">Kapora Alındı</option>
                         <option value="onaylandi">Onaylandı</option>
+                        <option value="tamamlandi">Eğitim Tamamlandı</option>
+                        <option value="iptal">İptal Edildi</option>
+                        <option value="arsiv">Arşivlenenler</option>
                     </select>
                 </div>
                 <div>

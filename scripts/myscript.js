@@ -25,10 +25,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let sonSnapshotVerisi = null;
     let tumBasvurular = [];
 
-    // --- Telefon Numarasını WhatsApp Formatına Getiren Yardımcı Fonksiyon ---
     const whatsappNumarasiTemizle = (tel) => {
         if (!tel) return "";
-        let temiz = String(tel).replace(/[^0-9]/g, ''); // Sadece rakamları bırak
+        let temiz = String(tel).replace(/[^0-9]/g, ''); 
         if (temiz.startsWith('0')) {
             temiz = '90' + temiz.substring(1);
         }
@@ -174,6 +173,26 @@ document.addEventListener("DOMContentLoaded", function () {
             "yol": "Yol Sürüş Eğitim Paketi"
         };
 
+        const durumMetinHaritasi = {
+            "beklemede": "Beklemede",
+            "arandi": "Arandı",
+            "kapora": "Kapora Alındı",
+            "onaylandi": "Onaylandı",
+            "tamamlandi": "Eğitim Tamamlandı",
+            "iptal": "İptal Edildi",
+            "arsiv": "Arşivlendi"
+        };
+
+        const rozetRenkleri = {
+            "beklemede": { bg: "rgba(234, 179, 8, 0.1)", fg: "#eab308" },
+            "arandi": { bg: "rgba(59, 130, 246, 0.1)", fg: "#3b82f6" },
+            "kapora": { bg: "rgba(249, 115, 22, 0.1)", fg: "#f97316" },
+            "onaylandi": { bg: "rgba(34, 197, 94, 0.1)", fg: "#22c55e" },
+            "tamamlandi": { bg: "rgba(13, 148, 136, 0.1)", fg: "#0d9488" },
+            "iptal": { bg: "rgba(239, 68, 68, 0.1)", fg: "#ef4444" },
+            "arsiv": { bg: "rgba(148, 163, 184, 0.1)", fg: "#94a3b8" }
+        };
+
         const listeleyiGuncelle = () => {
             if (tumBasvurular.length === 0) {
                 tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">Sistemde kayıtlı başvuru bulunmamaktadır.</td></tr>`;
@@ -181,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const aramaKelimesi = aramaInput ? aramaInput.value.toLowerCase().trim() : "";
-            const secilenDurum = durumFiltre ? durumFiltre.value : "hepsi";
+            const secilenDurum = durumFiltre ? durumFiltre.value : "aktif";
 
             let htmlIcerik = "";
             let filtrelenmisAdet = 0;
@@ -191,9 +210,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 const kKursiyerSoyad = String(veri.soyad || "");
                 const adSoyad = (kKursiyerAd + " " + kKursiyerSoyad).toLowerCase();
                 const telefon = veri.telefon ? String(veri.telefon).toLowerCase() : "";
+                const sDurum = veri.durum || "beklemede";
                 
                 const aramaUyumlu = adSoyad.includes(aramaKelimesi) || telefon.includes(aramaKelimesi);
-                const durumUyumlu = secilenDurum === "hepsi" || String(veri.durum || "beklemede") === secilenDurum;
+                
+                // Akıllı Arşivleme Filtre Mantığı
+                let durumUyumlu = false;
+                if (secilenDurum === "aktif") {
+                    durumUyumlu = sDurum !== "arsiv";
+                } else if (secilenDurum === "hepsi") {
+                    durumUyumlu = true;
+                } else {
+                    durumUyumlu = sDurum === secilenDurum;
+                }
 
                 if (aramaUyumlu && durumUyumlu) {
                     filtrelenmisAdet++;
@@ -202,9 +231,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         ? veri.paketler.map(p => paketHaritasi[p] || p).join(", ") 
                         : "Seçim Yok";
 
-                    // WhatsApp için numara temizliği ve mesaj encode işlemleri
                     const temizNumara = whatsappNumarasiTemizle(veri.telefon);
                     const taslakMesaj = encodeURIComponent(`Merhaba ${kKursiyerAd} ${kKursiyerSoyad},\n\nFatih Barış Akademi web sitemiz üzerinden yapmış olduğunuz "Motosiklet Güvenli ve İleri Sürüş Teknikleri" ön başvurunuz tarafımıza ulaşmıştır. Eğitim sürecini planlamak ve detayları görüşmek adına müsait olduğunuz bir zaman dilimini iletebilir misiniz?\n\nİyi günler, güvenli sürüşler dileriz.`);
+                    
+                    const renk = rozetRenkleri[sDurum] || { bg: "rgba(234, 179, 8, 0.1)", fg: "#eab308" };
+                    const durumGosterimMetni = durumMetinHaritasi[sDurum] || sDurum;
 
                     htmlIcerik += `
                         <tr>
@@ -227,12 +258,20 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <small style="color: #64748b;">Tecrübe: ${veri.tecrube || "-"}</small>
                             </td>
                             <td><span style="color: #ffffff; font-size: 14px;">${paketMetni}</span></td>
-                            <td><span class="status-badge status-${veri.durum || "beklemede"}">${veri.durum || "beklemede"}</span></td>
                             <td>
-                                <select class="action-btn" onchange="durumDegistir('${veri.id}', this.value)">
-                                    <option value="beklemede" ${veri.durum === 'beklemede' ? 'selected' : ''}>Beklemede</option>
-                                    <option value="arandi" ${veri.durum === 'arandi' ? 'selected' : ''}>Arandı</option>
-                                    <option value="onaylandi" ${veri.durum === 'onaylandi' ? 'selected' : ''}>Onaylandı</option>
+                                <span class="status-badge" style="background: ${renk.bg}; color: ${renk.fg}; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; text-transform: capitalize;">
+                                    ${durumGosterimMetni}
+                                </span>
+                            </td>
+                            <td>
+                                <select class="action-btn" onchange="durumDegistir('${veri.id}', this.value)" style="width: 130px;">
+                                    <option value="beklemede" ${sDurum === 'beklemede' ? 'selected' : ''}>Beklemede</option>
+                                    <option value="arandi" ${sDurum === 'arandi' ? 'selected' : ''}>Arandı</option>
+                                    <option value="kapora" ${sDurum === 'kapora' ? 'selected' : ''}>Kapora Alındı</option>
+                                    <option value="onaylandi" ${sDurum === 'onaylandi' ? 'selected' : ''}>Onaylandı</option>
+                                    <option value="tamamlandi" ${sDurum === 'tamamlandi' ? 'selected' : ''}>Tamamlandı</option>
+                                    <option value="iptal" ${sDurum === 'iptal' ? 'selected' : ''}>İptal Edildi</option>
+                                    <option value="arsiv" ${sDurum === 'arsiv' ? 'selected' : ''}>Arşivle</option>
                                 </select>
                                 <button class="action-btn" onclick="detayGoster('${veri.id}')" style="color: #3b82f6; border-color: rgba(59, 130, 246, 0.2); margin-left: 5px;">
                                     <i class="fa-solid fa-eye"></i>
@@ -247,7 +286,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             tabloGovdesi.innerHTML = filtrelenmisAdet === 0 
-                ? `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">Arama kriterlerine uygun sonuç bulunamadı.</td></tr>` 
+                ? `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">Kriterlere uygun sonuç bulunamadı.</td></tr>` 
                 : htmlIcerik;
         };
 
@@ -267,18 +306,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 const veri = docSnap.data();
                 tumBasvurular.push({ id: docSnap.id, ...veri });
 
-                countToplam++;
                 const sDurum = veri.durum || "beklemede";
-                if (sDurum === "beklemede") countBeklemede++;
-                else if (sDurum === "arandi") countArandi++;
-                else if (sDurum === "onaylandi") countOnaylandi++;
+                
+                // İstatistiklerde Arşivlenenler genel sayıya etki etmesin
+                if (sDurum !== "arsiv") {
+                    countToplam++;
+                    if (sDurum === "beklemede") countBeklemede++;
+                    else if (sDurum === "arandi") countArandi++;
+                    else if (sDurum === "onaylandi" || sDurum === "kapora" || sDurum === "tamamlandi") countOnaylandi++;
+                }
 
+                // Ciro ve Dağılım Hesaplama (Onaylandı, Kapora ve Tamamlandı ciroya eklenir)
                 if (veri.paketler && Array.isArray(veri.paketler)) {
                     veri.paketler.forEach(p => {
-                        if (p === "tum") { dTum++; if (sDurum === "onaylandi") toplamCiro += fiyatTum; }
-                        else if (p === "teorik") { dTeorik++; if (sDurum === "onaylandi") toplamCiro += fiyatTeorik; }
-                        else if (p === "kapali") { dKapali++; if (sDurum === "onaylandi") toplamCiro += fiyatKapali; }
-                        else if (p === "yol") { dYol++; if (sDurum === "onaylandi") toplamCiro += fiyatYol; }
+                        if (p === "tum") { dTum++; if (sDurum === "onaylandi" || sDurum === "kapora" || sDurum === "tamamlandi") toplamCiro += fiyatTum; }
+                        else if (p === "teorik") { dTeorik++; if (sDurum === "onaylandi" || sDurum === "kapora" || sDurum === "tamamlandi") toplamCiro += fiyatTeorik; }
+                        else if (p === "kapali") { dKapali++; if (sDurum === "onaylandi" || sDurum === "kapora" || sDurum === "tamamlandi") toplamCiro += fiyatKapali; }
+                        else if (p === "yol") { dYol++; if (sDurum === "onaylandi" || sDurum === "kapora" || sDurum === "tamamlandi") toplamCiro += fiyatYol; }
                     });
                 }
             });
@@ -311,7 +355,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
                 const aramaKelimesi = aramaInput ? aramaInput.value.toLowerCase().trim() : "";
-                const secilenDurum = durumFiltre ? durumFiltre.value : "hepsi";
+                const secilenDurum = durumFiltre ? durumFiltre.value : "aktif";
 
                 let csvIcerik = "\uFEFFKursiyer Adı Soyadı;Telefon;Yaş;Meslek;Motosiklet;Tecrübe;Talep Edilen Eğitim;Durum;Yönetici Notu\n";
 
@@ -320,8 +364,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     const kKursiyerSoyad = String(veri.soyad || "");
                     const adSoyad = (kKursiyerAd + " " + kKursiyerSoyad).toLowerCase();
                     const telefon = veri.telefon ? String(veri.telefon).toLowerCase() : "";
+                    const sDurum = veri.durum || "beklemede";
                     
-                    if ((adSoyad.includes(aramaKelimesi) || telefon.includes(aramaKelimesi)) && (secilenDurum === "hepsi" || String(veri.durum || "beklemede") === secilenDurum)) {
+                    let durumUyumlu = false;
+                    if (secilenDurum === "aktif") durumUyumlu = sDurum !== "arsiv";
+                    else if (secilenDurum === "hepsi") durumUyumlu = true;
+                    else durumUyumlu = sDurum === secilenDurum;
+
+                    if ((adSoyad.includes(aramaKelimesi) || telefon.includes(aramaKelimesi)) && durumUyumlu) {
                         const tamAd = `${kKursiyerAd} ${kKursiyerSoyad}`.replace(/;/g, ",");
                         const telNo = String(veri.telefon || "-").replace(/;/g, ",");
                         const yas = String(veri.yas || "-").replace(/;/g, ",");
@@ -329,7 +379,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         const motosiklet = String(veri.motosiklet || "-").replace(/;/g, ",");
                         const tecrube = String(veri.tecrube || "-").replace(/;/g, ",");
                         const paketMetni = veri.paketler && Array.isArray(veri.paketler) && veri.paketler.length > 0 ? veri.paketler.map(p => paketHaritasi[p] || p).join(" + ") : "Seçim Yok";
-                        const durum = String(veri.durum || "beklemede");
+                        const durum = durumMetinHaritasi[sDurum] || sDurum;
                         const yoneticiNotu = String(veri.not || "Not Yok").replace(/;/g, ",").replace(/\n/g, " ");
 
                         csvIcerik += `"${tamAd}";"${telNo}";"${yas}";"${meslek}";"${motosiklet}";"${tecrube}";"${paketMetni.replace(/"/g, '""')}";"${durum}";"${yoneticiNotu.replace(/"/g, '""')}"\n`;
