@@ -25,7 +25,20 @@ document.addEventListener("DOMContentLoaded", function () {
     let sonSnapshotVerisi = null;
     let tumBasvurular = [];
 
-    // --- Sayaç Animasyonu Optimizasyonu ---
+    // --- Telefon Numarasını WhatsApp Formatına Getiren Yardımcı Fonksiyon ---
+    const whatsappNumarasiTemizle = (tel) => {
+        if (!tel) return "";
+        let temiz = String(tel).replace(/[^0-9]/g, ''); // Sadece rakamları bırak
+        if (temiz.startsWith('0')) {
+            temiz = '90' + temiz.substring(1);
+        }
+        if (!temiz.startsWith('90') && temiz.length === 10) {
+            temiz = '90' + temiz;
+        }
+        return temiz;
+    };
+
+    // --- Sayaç Animasyonu Kontrolü ---
     const sayacElementleri = document.querySelectorAll('.istatistik-kutu h3');
     if (sayacElementleri.length > 0) {
         const saymaSuresiMilisaniye = 1500;
@@ -189,6 +202,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         ? veri.paketler.map(p => paketHaritasi[p] || p).join(", ") 
                         : "Seçim Yok";
 
+                    // WhatsApp için numara temizliği ve mesaj encode işlemleri
+                    const temizNumara = whatsappNumarasiTemizle(veri.telefon);
+                    const taslakMesaj = encodeURIComponent(`Merhaba ${kKursiyerAd} ${kKursiyerSoyad},\n\nFatih Barış Akademi web sitemiz üzerinden yapmış olduğunuz "Motosiklet Güvenli ve İleri Sürüş Teknikleri" ön başvurunuz tarafımıza ulaşmıştır. Eğitim sürecini planlamak ve detayları görüşmek adına müsait olduğunuz bir zaman dilimini iletebilir misiniz?\n\nİyi günler, güvenli sürüşler dileriz.`);
+
                     htmlIcerik += `
                         <tr>
                             <td>
@@ -196,9 +213,14 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <small style="color: #64748b;">Yaş: ${veri.yas || "-"} | ${veri.meslek || "-"}</small>
                             </td>
                             <td>
-                                <a href="tel:${veri.telefon || ""}" style="color: #ff4500; text-decoration: none; font-weight: 500;">
-                                    <i class="fa-solid fa-phone"></i> ${veri.telefon || "-"}
-                                </a>
+                                <div style="display: flex; flex-direction: column; gap: 6px;">
+                                    <a href="tel:${veri.telefon || ""}" style="color: #ff4500; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 6px;">
+                                        <i class="fa-solid fa-phone"></i> ${veri.telefon || "-"}
+                                    </a>
+                                    <a href="https://wa.me/${temizNumara}?text=${taslakMesaj}" target="_blank" style="color: #22c55e; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; font-size: 13px;">
+                                        <i class="fa-brands fa-whatsapp" style="font-size: 15px;"></i> WhatsApp ile Yaz
+                                    </a>
+                                </div>
                             </td>
                             <td>
                                 <b>${veri.motosiklet || "-"}</b><br>
@@ -347,7 +369,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (aramaInput) aramaInput.addEventListener('input', listeleyiGuncelle);
         if (durumFiltre) durumFiltre.addEventListener('change', listeleyiGuncelle);
 
-        // Tekil Başvuru Dinleyicisi
         onSnapshot(collection(db, "basvurular"), (snapshot) => {
             sonSnapshotVerisi = snapshot;
             metrikleriHesaplaVeGuncelle();
