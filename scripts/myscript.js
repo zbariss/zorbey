@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 await signInWithEmailAndPassword(auth, email, sifre);
                 window.location.href = "admin-panel.html";
             } catch (error) {
-                alert("Giriş Başarısız: Hatalı kullanıcı adı veya şifre patron.");
+                alert("Giriş Başarısız: Hatalı kullanıcı adı veya şifre girdiniz.");
                 btn.innerText = "Giriş Yap";
                 btn.disabled = false;
             }
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const listeleyiGuncelle = () => {
             if (tumBasvurular.length === 0) {
-                tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">Henüz hiç başvuru bulunmuyor patron.</td></tr>`;
+                tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">Sistemde kayıtlı başvuru bulunmamaktadır.</td></tr>`;
                 return;
             }
 
@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             if (filtrelenmisAdet === 0) {
-                tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">Arama kriterlerine uygun sonuç bulunamadı patron.</td></tr>`;
+                tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">Arama kriterlerine uygun sonuç bulunamadı.</td></tr>`;
             } else {
                 tabloGovdesi.innerHTML = htmlIcerik;
             }
@@ -291,10 +291,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     yol: document.getElementById('fiyat-input-yol').value,
                     tum: document.getElementById('fiyat-input-tum').value
                 });
-                alert("Fiyatlar başarıyla güncellendi patron!");
+                alert("Fiyatlar başarıyla güncellendi.");
             } catch (error) {
                 console.error("Fiyat güncelleme hatası:", error);
-                alert("Fiyatlar kaydedilirken hata oluştu.");
+                alert("Fiyatlar kaydedilirken bir hata oluştu.");
             } finally {
                 btn.innerText = "Fiyatları Güncelle";
                 btn.disabled = false;
@@ -346,7 +346,7 @@ window.durumDegistir = async function(id, yeniDurum) {
 };
 
 window.basvuruSil = async function(id) {
-    if (confirm("Bu kursiyer kaydını kalıcı olarak silmek istediğine emin misin patron?")) {
+    if (confirm("Bu kursiyer kaydını kalıcı olarak silmek istediğinize emin misiniz?")) {
         try {
             await deleteDoc(doc(db, "basvurular", id));
         } catch (error) {
@@ -365,7 +365,7 @@ window.notKaydet = async function(id) {
     try {
         const basvuruRef = doc(db, "basvurular", id);
         await updateDoc(basvuruRef, { not: notMetni });
-        alert("Not başarıyla hafızaya alındı patron!");
+        alert("Not başarıyla kaydedildi.");
     } catch (error) {
         console.error("Not kaydetme hatası:", error);
         alert("Not kaydedilirken bir hata oluştu.");
