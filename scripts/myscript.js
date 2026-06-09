@@ -203,6 +203,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (filtrelenmisAdet === 0) {
                 tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">Arama kriterlerine uygun sonuç bulunamadı patron.</td></tr>`;
+            } else {
+                tabloGovdesi.innerHTML = htmlIcerik;
             }
         };
 
