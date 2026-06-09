@@ -139,18 +139,84 @@ document.addEventListener("DOMContentLoaded", function () {
     const tabloGovdesi = document.getElementById('basvuru-tablo-govdesi');
     if (tabloGovdesi) {
         const q = query(collection(db, "basvurular"), orderBy("kayitTarihi", "desc"));
-        
+        let tumBasvurular = [];
+        const aramaInput = document.getElementById('admin-arama-input');
+        const durumFiltre = document.getElementById('admin-durum-filtre');
+
+        const listeleyiGuncelle = () => {
+            if (tumBasvurular.length === 0) {
+                tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">Henüz hiç başvuru bulunmuyor patron.</td></tr>`;
+                return;
+            }
+
+            const aramaKelimesi = aramaInput ? aramaInput.value.toLowerCase().trim() : "";
+            const secilenDurum = durumFiltre ? durumFiltre.value : "hepsi";
+
+            let htmlIcerik = "";
+            let filtrelenmisAdet = 0;
+
+            tumBasvurular.forEach((veri) => {
+                const adSoyad = (veri.ad + " " + veri.soyad).toLowerCase();
+                const telefon = veri.telefon ? veri.telefon.toLowerCase() : "";
+                
+                const aramaUyumlu = adSoyad.includes(aramaKelimesi) || telefon.includes(aramaKelimesi);
+                const durumUyumlu = secilenDurum === "hepsi" || veri.durum === secilenDurum;
+
+                if (aramaUyumlu && durumUyumlu) {
+                    filtrelenmisAdet++;
+                    const paketMetni = veri.paketler && veri.paketler.length > 0 ? veri.paketler.join(", ") : "Seçim Yok";
+                    htmlIcerik += `
+                        <tr>
+                            <td>
+                                <b>${veri.ad} ${veri.soyad}</b><br>
+                                <small style="color: #64748b;">Yaş: ${veri.yas} | ${veri.meslek}</small>
+                            </td>
+                            <td>
+                                <a href="tel:${veri.telefon}" style="color: #ff4500; text-decoration: none; font-weight: 500;">
+                                    <i class="fa-solid fa-phone"></i> ${veri.telefon}
+                                </a>
+                            </td>
+                            <td>
+                                <b>${veri.motosiklet}</b><br>
+                                <small style="color: #64748b;">Tecrübe: ${veri.tecrube}</small>
+                            </td>
+                            <td><span style="color: #ffffff; font-size: 14px;">${paketMetni}</span></td>
+                            <td><span class="status-badge status-${veri.durum}">${veri.durum}</span></td>
+                            <td>
+                                <select class="action-btn" onchange="durumDegistir('${veri.id}', this.value)">
+                                    <option value="beklemede" ${veri.durum === 'beklemede' ? 'selected' : ''}>Beklemede</option>
+                                    <option value="arandi" ${veri.durum === 'arandi' ? 'selected' : ''}>Arandı</option>
+                                    <option value="onaylandi" ${veri.durum === 'onaylandi' ? 'selected' : ''}>Onaylandı</option>
+                                </select>
+                                <button class="action-btn" onclick="basvuruSil('${veri.id}')" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.2); margin-left: 5px;">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }
+            });
+
+            if (filtrelenmisAdet === 0) {
+                tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">Arama kriterlerine uygun sonuç bulunamadı patron.</td></tr>`;
+            }
+        };
+
+        if (aramaInput) aramaInput.addEventListener('input', listeleyiGuncelle);
+        if (durumFiltre) durumFiltre.addEventListener('change', listeleyiGuncelle);
+
         onSnapshot(q, (snapshot) => {
             if (snapshot.empty) {
-                tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">Henüz hiç başvuru bulunmuyor patron.</td></tr>`;
+                tumBasvurular = [];
                 document.getElementById('stat-toplam').innerText = "0";
                 document.getElementById('stat-beklemede').innerText = "0";
                 document.getElementById('stat-arandi').innerText = "0";
                 document.getElementById('stat-onaylandi').innerText = "0";
+                listeleyiGuncelle();
                 return;
             }
 
-            let htmlIcerik = "";
+            tumBasvurular = [];
             let countToplam = 0;
             let countBeklemede = 0;
             let countArandi = 0;
@@ -158,50 +224,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
             snapshot.forEach((docSnap) => {
                 const veri = docSnap.data();
-                const id = docSnap.id;
-                const paketMetni = veri.paketler && veri.paketler.length > 0 ? veri.paketler.join(", ") : "Seçim Yok";
+                tumBasvurular.push({ id: docSnap.id, ...veri });
 
                 countToplam++;
                 if (veri.durum === "beklemede") countBeklemede++;
                 else if (veri.durum === "arandi") countArandi++;
                 else if (veri.durum === "onaylandi") countOnaylandi++;
-
-                htmlIcerik += `
-                    <tr>
-                        <td>
-                            <b>${veri.ad} ${veri.soyad}</b><br>
-                            <small style="color: #64748b;">Yaş: ${veri.yas} | ${veri.meslek}</small>
-                        </td>
-                        <td>
-                            <a href="tel:${veri.telefon}" style="color: #ff4500; text-decoration: none; font-weight: 500;">
-                                <i class="fa-solid fa-phone"></i> ${veri.telefon}
-                            </a>
-                        </td>
-                        <td>
-                            <b>${veri.motosiklet}</b><br>
-                            <small style="color: #64748b;">Tecrübe: ${veri.tecrube}</small>
-                        </td>
-                        <td><span style="color: #ffffff; font-size: 14px;">${paketMetni}</span></td>
-                        <td><span class="status-badge status-${veri.durum}">${veri.durum}</span></td>
-                        <td>
-                            <select class="action-btn" onchange="durumDegistir('${id}', this.value)">
-                                <option value="beklemede" ${veri.durum === 'beklemede' ? 'selected' : ''}>Beklemede</option>
-                                <option value="arandi" ${veri.durum === 'arandi' ? 'selected' : ''}>Arandı</option>
-                                <option value="onaylandi" ${veri.durum === 'onaylandi' ? 'selected' : ''}>Onaylandı</option>
-                            </select>
-                            <button class="action-btn" onclick="basvuruSil('${id}')" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.2); margin-left: 5px;">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
             });
-            
-            tabloGovdesi.innerHTML = htmlIcerik;
+
             document.getElementById('stat-toplam').innerText = countToplam;
             document.getElementById('stat-beklemede').innerText = countBeklemede;
             document.getElementById('stat-arandi').innerText = countArandi;
             document.getElementById('stat-onaylandi').innerText = countOnaylandi;
+
+            listeleyiGuncelle();
         });
     }
 
