@@ -176,7 +176,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const durumMetinHaritasi = {
             "beklemede": "Beklemede",
             "arandi": "Arandı",
-            "kapora": "Kapora Alındı",
             "onaylandi": "Onaylandı",
             "tamamlandi": "Eğitim Tamamlandı",
             "iptal": "İptal Edildi",
@@ -186,7 +185,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const rozetRenkleri = {
             "beklemede": { bg: "rgba(234, 179, 8, 0.1)", fg: "#eab308" },
             "arandi": { bg: "rgba(59, 130, 246, 0.1)", fg: "#3b82f6" },
-            "kapora": { bg: "rgba(249, 115, 22, 0.1)", fg: "#f97316" },
             "onaylandi": { bg: "rgba(34, 197, 94, 0.1)", fg: "#22c55e" },
             "tamamlandi": { bg: "rgba(13, 148, 136, 0.1)", fg: "#0d9488" },
             "iptal": { bg: "rgba(239, 68, 68, 0.1)", fg: "#ef4444" },
@@ -275,7 +273,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <select class="action-btn" onchange="durumDegistir('${veri.id}', this.value)" style="width: 130px;">
                                     <option value="beklemede" ${sDurum === 'beklemede' ? 'selected' : ''}>Beklemede</option>
                                     <option value="arandi" ${sDurum === 'arandi' ? 'selected' : ''}>Arandı</option>
-                                    <option value="kapora" ${sDurum === 'kapora' ? 'selected' : ''}>Kapora Alındı</option>
                                     <option value="onaylandi" ${sDurum === 'onaylandi' ? 'selected' : ''}>Onaylandı</option>
                                     <option value="tamamlandi" ${sDurum === 'tamamlandi' ? 'selected' : ''}>Tamamlandı</option>
                                     <option value="iptal" ${sDurum === 'iptal' ? 'selected' : ''}>İptal Edildi</option>
@@ -302,8 +299,8 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!sonSnapshotVerisi) return;
 
             tumBasvurular = [];
-            // Net, Ayrıştırılmış Ayrık Durum Sayaçları
-            let countToplam = 0, countBeklemede = 0, countArandi = 0, countKapora = 0, countOnaylandi = 0, countTamamlandi = 0;
+            // Kapora kaldirildi, yerine saf countArsiv entegre edildi
+            let countToplam = 0, countBeklemede = 0, countArandi = 0, countArsiv = 0, countOnaylandi = 0, countTamamlandi = 0;
             let dTum = 0, dTeorik = 0, dKapali = 0, dYol = 0, toplamCiro = 0;
 
             const fiyatTum = Number(String(aktifFiyatlar.tum).replace(/[^0-9]/g, '')) || 0;
@@ -317,22 +314,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const sDurum = veri.durum || "beklemede";
                 
-                // Arşiv harici tüm aktif operasyonu say
                 if (sDurum !== "arsiv") {
                     countToplam++;
                     if (sDurum === "beklemede") countBeklemede++;
                     else if (sDurum === "arandi") countArandi++;
-                    else if (sDurum === "kapora") countKapora++;
                     else if (sDurum === "onaylandi") countOnaylandi++;
                     else if (sDurum === "tamamlandi") countTamamlandi++;
+                } else {
+                    countArsiv++; // Ust kısımdaki arşivlenenler sayacı
                 }
 
+                // Ciro hesaplaması (Sadece onaylanan ve tamamlananlar ciroya eklenir)
                 if (veri.paketler && Array.isArray(veri.paketler)) {
                     veri.paketler.forEach(p => {
-                        if (p === "tum") { dTum++; if (sDurum === "onaylandi" || sDurum === "kapora" || sDurum === "tamamlandi") toplamCiro += fiyatTum; }
-                        else if (p === "teorik") { dTeorik++; if (sDurum === "onaylandi" || sDurum === "kapora" || sDurum === "tamamlandi") toplamCiro += fiyatTeorik; }
-                        else if (p === "kapali") { dKapali++; if (sDurum === "onaylandi" || sDurum === "kapora" || sDurum === "tamamlandi") toplamCiro += fiyatKapali; }
-                        else if (p === "yol") { dYol++; if (sDurum === "onaylandi" || sDurum === "kapora" || sDurum === "tamamlandi") toplamCiro += fiyatYol; }
+                        if (p === "tum") { dTum++; if (sDurum === "onaylandi" || sDurum === "tamamlandi") toplamCiro += fiyatTum; }
+                        else if (p === "teorik") { dTeorik++; if (sDurum === "onaylandi" || sDurum === "tamamlandi") toplamCiro += fiyatTeorik; }
+                        else if (p === "kapali") { dKapali++; if (sDurum === "onaylandi" || sDurum === "tamamlandi") toplamCiro += fiyatKapali; }
+                        else if (p === "yol") { dYol++; if (sDurum === "onaylandi" || sDurum === "tamamlandi") toplamCiro += fiyatYol; }
                     });
                 }
             });
@@ -343,11 +341,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 return tB - tA;
             });
 
-            // Yeni DOM Bağlantıları Mühürlendi
             document.getElementById('stat-toplam').innerText = countToplam;
             document.getElementById('stat-beklemede').innerText = countBeklemede;
             document.getElementById('stat-arandi').innerText = countArandi;
-            document.getElementById('stat-kapora').innerText = countKapora;
+            document.getElementById('stat-arsiv').innerText = countArsiv;
             document.getElementById('stat-onaylandi').innerText = countOnaylandi;
             document.getElementById('stat-tamamlandi').innerText = countTamamlandi;
             document.getElementById('stat-ciro').innerText = toplamCiro.toLocaleString('tr-TR') + " TL";
