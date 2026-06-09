@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { 
     getFirestore, collection, addDoc, serverTimestamp, 
-    query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, setDoc
+    query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, getDoc, setDoc
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { 
     getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut 
@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const tabloGovdesi = document.getElementById('basvuru-tablo-govdesi');
     if (tabloGovdesi) {
-        const q = query(collection(db, "basvurular"), orderBy("kayitTarihi", "desc"));
+        const q = collection(db, "basvurular");
         let tumBasvurular = [];
         const aramaInput = document.getElementById('admin-arama-input');
         const durumFiltre = document.getElementById('admin-durum-filtre');
@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     htmlIcerik += `
                         <tr>
                             <td>
-                                <b>${kKursiyerAd} ${kKursiyerSoyad}</b><br>
+                                <b>${veri.ad || "-"} ${veri.soyad || ""}</b><br>
                                 <small style="color: #64748b;">Yaş: ${veri.yas || "-"} | ${veri.meslek || "-"}</small>
                             </td>
                             <td>
@@ -254,6 +254,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 else if (veri.durum === "onaylandi") countOnaylandi++;
             });
 
+            tumBasvurular.sort((a, b) => {
+                const tA = a.kayitTarihi && a.kayitTarihi.seconds ? a.kayitTarihi.seconds : 0;
+                const tB = b.kayitTarihi && b.kayitTarihi.seconds ? b.kayitTarihi.seconds : 0;
+                return tB - tA;
+            });
+
             document.getElementById('stat-toplam').innerText = countToplam;
             document.getElementById('stat-beklemede').innerText = countBeklemede;
             document.getElementById('stat-arandi').innerText = countArandi;
@@ -261,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             listeleyiGuncelle();
         }, (error) => {
-            console.error("Firestore baglanti hatasi:", error);
+            alert("Firebase Hatası: " + error.message);
         });
     }
 
