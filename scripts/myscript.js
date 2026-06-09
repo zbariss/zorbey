@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { 
     getFirestore, collection, addDoc, serverTimestamp, 
-    query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, getDoc, setDoc
+    query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, setDoc
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { 
     getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut 
@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let sonSnapshotVerisi = null;
     let tumBasvurular = [];
 
+    // --- Sayaç Animasyonu Optimizasyonu ---
     const sayacElementleri = document.querySelectorAll('.istatistik-kutu h3');
     if (sayacElementleri.length > 0) {
         const saymaSuresiMilisaniye = 1500;
@@ -45,7 +46,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 let ilerleme = Math.min(gecenSure / saymaSuresiMilisaniye, 1);
                 const easeOut = 1 - Math.pow(1 - ilerleme, 2); 
                 element.innerText = Math.floor(easeOut * hedefSayi).toLocaleString('tr-TR') + metinEki;
-                if (ilerleme < 1) element.dataset.animationId = requestAnimationFrame(animasyonAdimi);
+                if (ilerleme < 1) {
+                    element.dataset.animationId = requestAnimationFrame(animasyonAdimi);
+                }
             };
             element.dataset.animationId = requestAnimationFrame(animasyonAdimi);
         };
@@ -63,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sayacElementleri.forEach(sayac => gozlemci.observe(sayac));
     }
 
+    // --- Kayıt Formu Yönetimi ---
     const kayitFormu = document.querySelector('form[action="onay.html"]');
     if (kayitFormu) {
         kayitFormu.addEventListener('submit', async function(e) {
@@ -98,6 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // --- Admin Giriş İşlemleri ---
     const loginForm = document.getElementById('admin-login-form');
     if (loginForm) {
         loginForm.addEventListener('submit', async function (e) {
@@ -120,6 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // --- Admin Oturum Kapatma ---
     const logoutBtn = document.getElementById('admin-logout-btn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function (e) {
@@ -130,6 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // --- Oturum Durumu Kontrolü ---
     onAuthStateChanged(auth, (user) => {
         const suankiSayfa = window.location.pathname;
         if (suankiSayfa.includes("admin-panel.html") && !user) {
@@ -140,6 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // --- Yönetim Paneli Dinamik Tablo ve Metrik Motoru ---
     const tabloGovdesi = document.getElementById('basvuru-tablo-govdesi');
     if (tabloGovdesi) {
         const aramaInput = document.getElementById('admin-arama-input');
@@ -216,24 +224,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            if (filtrelenmisAdet === 0) {
-                tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">Arama kriterlerine uygun sonuç bulunamadı.</td></tr>`;
-            } else {
-                tabloGovdesi.innerHTML = htmlIcerik;
-            }
+            tabloGovdesi.innerHTML = filtrelenmisAdet === 0 
+                ? `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">Arama kriterlerine uygun sonuç bulunamadı.</td></tr>` 
+                : htmlIcerik;
         };
 
         const metrikleriHesaplaVeGuncelle = () => {
             if (!sonSnapshotVerisi) return;
 
             tumBasvurular = [];
-            let countToplam = 0;
-            let countBeklemede = 0;
-            let countArandi = 0;
-            let countOnaylandi = 0;
-
-            let dTum = 0, dTeorik = 0, dKapali = 0, dYol = 0;
-            let toplamCiro = 0;
+            let countToplam = 0, countBeklemede = 0, countArandi = 0, countOnaylandi = 0;
+            let dTum = 0, dTeorik = 0, dKapali = 0, dYol = 0, toplamCiro = 0;
 
             const fiyatTum = Number(String(aktifFiyatlar.tum).replace(/[^0-9]/g, '')) || 0;
             const fiyatTeorik = Number(String(aktifFiyatlar.teorik).replace(/[^0-9]/g, '')) || 0;
@@ -272,15 +273,11 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('stat-onaylandi').innerText = countOnaylandi;
             document.getElementById('stat-ciro').innerText = toplamCiro.toLocaleString('tr-TR') + " TL";
 
-            const distTumEl = document.getElementById('dist-tum');
-            const distTeorikEl = document.getElementById('dist-teorik');
-            const distKapaliEl = document.getElementById('dist-kapali');
-            const distYolEl = document.getElementById('dist-yol');
-
-            if (distTumEl) distTumEl.innerText = dTum;
-            if (distTeorikEl) distTeorikEl.innerText = dTeorik;
-            if (distKapaliEl) distKapaliEl.innerText = dKapali;
-            if (distYolEl) distYolEl.innerText = dYol;
+            const elements = { 'dist-tum': dTum, 'dist-teorik': dTeorik, 'dist-kapali': dKapali, 'dist-yol': dYol };
+            Object.keys(elements).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = elements[id];
+            });
 
             listeleyiGuncelle();
         };
@@ -291,7 +288,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     alert("Dışa aktarılacak herhangi bir başvuru kaydı bulunmamaktadır.");
                     return;
                 }
-                
                 const aramaKelimesi = aramaInput ? aramaInput.value.toLowerCase().trim() : "";
                 const secilenDurum = durumFiltre ? durumFiltre.value : "hepsi";
 
@@ -303,19 +299,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     const adSoyad = (kKursiyerAd + " " + kKursiyerSoyad).toLowerCase();
                     const telefon = veri.telefon ? String(veri.telefon).toLowerCase() : "";
                     
-                    const aramaUyumlu = adSoyad.includes(aramaKelimesi) || telefon.includes(aramaKelimesi);
-                    const durumUyumlu = secilenDurum === "hepsi" || String(veri.durum || "beklemede") === secilenDurum;
-
-                    if (aramaUyumlu && durumUyumlu) {
+                    if ((adSoyad.includes(aramaKelimesi) || telefon.includes(aramaKelimesi)) && (secilenDurum === "hepsi" || String(veri.durum || "beklemede") === secilenDurum)) {
                         const tamAd = `${kKursiyerAd} ${kKursiyerSoyad}`.replace(/;/g, ",");
                         const telNo = String(veri.telefon || "-").replace(/;/g, ",");
                         const yas = String(veri.yas || "-").replace(/;/g, ",");
                         const meslek = String(veri.meslek || "-").replace(/;/g, ",");
                         const motosiklet = String(veri.motosiklet || "-").replace(/;/g, ",");
                         const tecrube = String(veri.tecrube || "-").replace(/;/g, ",");
-                        const paketMetni = veri.paketler && Array.isArray(veri.paketler) && veri.paketler.length > 0 
-                            ? veri.paketler.map(p => paketHaritasi[p] || p).join(" + ") 
-                            : "Seçim Yok";
+                        const paketMetni = veri.paketler && Array.isArray(veri.paketler) && veri.paketler.length > 0 ? veri.paketler.map(p => paketHaritasi[p] || p).join(" + ") : "Seçim Yok";
                         const durum = String(veri.durum || "beklemede");
                         const yoneticiNotu = String(veri.not || "Not Yok").replace(/;/g, ",").replace(/\n/g, " ");
 
@@ -325,8 +316,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const blob = new Blob([csvIcerik], { type: 'text/csv;charset=utf-8;' });
                 const link = document.createElement("a");
-                const url = URL.createObjectURL(blob);
-                link.setAttribute("href", url);
+                link.setAttribute("href", URL.createObjectURL(blob));
                 link.setAttribute("download", `FBA_Kursiyer_Raporu_${new Date().toISOString().slice(0,10)}.csv`);
                 link.style.visibility = 'hidden';
                 document.body.appendChild(link);
@@ -357,36 +347,47 @@ document.addEventListener("DOMContentLoaded", function () {
         if (aramaInput) aramaInput.addEventListener('input', listeleyiGuncelle);
         if (durumFiltre) durumFiltre.addEventListener('change', listeleyiGuncelle);
 
-        const q = collection(db, "basvurular");
-        onSnapshot(q, (snapshot) => {
+        // Tekil Başvuru Dinleyicisi
+        onSnapshot(collection(db, "basvurular"), (snapshot) => {
             sonSnapshotVerisi = snapshot;
             metrikleriHesaplaVeGuncelle();
-        }, (error) => {
-            console.error(error);
-        });
+        }, (error) => console.error("Veri akış hatası:", error));
     }
 
+    // --- Fiyat Veri Kontrolü ve Eşzamanlama ---
     const fiyatFormu = document.getElementById('admin-fiyat-form');
-    if (fiyatFormu) {
+    if (fiyatFormu || document.getElementById('goster-fiyat-teorik')) {
         onSnapshot(doc(db, "ayarlar", "fiyatlar"), (docSnap) => {
             if (docSnap.exists()) {
                 const veriler = docSnap.data();
-                document.getElementById('fiyat-input-teorik').value = veriler.teorik || "";
-                document.getElementById('fiyat-input-kapali').value = veriler.kapali || "";
-                document.getElementById('fiyat-input-yol').value = veriler.yol || "";
-                document.getElementById('fiyat-input-tum').value = veriler.tum || "";
+                
+                if (fiyatFormu) {
+                    document.getElementById('fiyat-input-teorik').value = veriler.teorik || "";
+                    document.getElementById('fiyat-input-kapali').value = veriler.kapali || "";
+                    document.getElementById('fiyat-input-yol').value = veriler.yol || "";
+                    document.getElementById('fiyat-input-tum').value = veriler.tum || "";
+                }
+
+                if (document.getElementById('goster-fiyat-teorik')) {
+                    document.getElementById('goster-fiyat-teorik').innerText = (veriler.teorik || "0") + " TL";
+                    document.getElementById('goster-fiyat-kapali').innerText = (veriler.kapali || "0") + " TL";
+                    document.getElementById('goster-fiyat-yol').innerText = (veriler.yol || "0") + " TL";
+                    document.getElementById('goster-fiyat-tum').innerText = (veriler.tum || "0") + " TL";
+                }
 
                 aktifFiyatlar.teorik = veriler.teorik || "0";
                 aktifFiyatlar.kapali = veriler.kapali || "0";
                 aktifFiyatlar.yol = veriler.yol || "0";
                 aktifFiyatlar.tum = veriler.tum || "0";
 
-                if (sonSnapshotVerisi) {
+                if (tabloGovdesi && sonSnapshotVerisi) {
                     metrikleriHesaplaVeGuncelle();
                 }
             }
-        });
+        }, (error) => console.error("Fiyat senkronizasyon hatası:", error));
+    }
 
+    if (fiyatFormu) {
         fiyatFormu.addEventListener('submit', async function (e) {
             e.preventDefault();
             const btn = fiyatFormu.querySelector('button');
@@ -411,19 +412,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    const gosterTeorik = document.getElementById('goster-fiyat-teorik');
-    if (gosterTeorik) {
-        onSnapshot(doc(db, "ayarlar", "fiyatlar"), (docSnap) => {
-            if (docSnap.exists()) {
-                const veriler = docSnap.data();
-                document.getElementById('goster-fiyat-teorik').innerText = veriler.teorik + " TL";
-                document.getElementById('goster-fiyat-kapali').innerText = veriler.kapali + " TL";
-                document.getElementById('goster-fiyat-yol').innerText = veriler.yol + " TL";
-                document.getElementById('goster-fiyat-tum').innerText = veriler.tum + " TL";
-            }
-        });
-    }
-
+    // --- Kayıt Sayfası Çoklu Paket Seçim Mantığı ---
     const tumPaket = document.getElementById('paket-tum');
     const digerPaketler = [document.getElementById('paket-teorik'), document.getElementById('paket-kapali'), document.getElementById('paket-yol')];
 
@@ -432,8 +421,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (e.target === tumPaket && tumPaket.checked) {
                 digerPaketler.forEach(p => p.checked = false);
             } else if (e.target !== tumPaket) {
-                const hepsiSecili = digerPaketler.every(p => p.checked);
-                if (hepsiSecili) {
+                if (digerPaketler.every(p => p.checked)) {
                     tumPaket.checked = true;
                     digerPaketler.forEach(p => p.checked = false);
                 } else if (digerPaketler.some(p => p.checked)) {
@@ -445,19 +433,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// --- Küresel Window Fonksiyonları ---
 window.durumDegistir = async function(id, yeniDurum) {
     try {
-        const basvuruRef = doc(db, "basvurular", id);
-        await updateDoc(basvuruRef, { durum: yeniDurum });
+        await updateDoc(doc(getFirestore(), "basvurular", id), { durum: yeniDurum });
     } catch (error) {
         console.error("Durum güncellenirken hata:", error);
     }
 };
 
 window.basvuruSil = async function(id) {
-    if (confirm("Bu kursiyer kaydını kalıcı olarak silmek istediğinize emin mısınız?")) {
+    if (confirm("Bu kursiyer kaydını kalıcı olarak silmek istediğinize emin misiniz?")) {
         try {
-            await deleteDoc(doc(db, "basvurular", id));
+            await deleteDoc(doc(getFirestore(), "basvurular", id));
         } catch (error) {
             console.error("Kayıt silinirken hata:", error);
         }
@@ -472,8 +460,7 @@ window.notKaydet = async function(id) {
     btn.disabled = true;
 
     try {
-        const basvuruRef = doc(db, "basvurular", id);
-        await updateDoc(basvuruRef, { not: notMetni });
+        await updateDoc(doc(getFirestore(), "basvurular", id), { not: notMetni });
         alert("Not başarıyla kaydedildi.");
     } catch (error) {
         console.error("Not kaydetme hatası:", error);
