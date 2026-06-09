@@ -141,6 +141,14 @@ document.addEventListener("DOMContentLoaded", function () {
         let tumBasvurular = [];
         const aramaInput = document.getElementById('admin-arama-input');
         const durumFiltre = document.getElementById('admin-durum-filtre');
+        const exportBtn = document.getElementById('admin-export-btn');
+
+        const paketHaritasi = {
+            "tum": "Güvenli ve İleri Sürüş Teknikleri (Tüm Paket)",
+            "teorik": "Teorik Eğitim Paketi",
+            "kapali": "Kapalı Alan Eğitim Paketi",
+            "yol": "Yol Sürüş Eğitim Paketi"
+        };
 
         const listeleyiGuncelle = () => {
             if (tumBasvurular.length === 0) {
@@ -153,13 +161,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let htmlIcerik = "";
             let filtrelenmisAdet = 0;
-
-            const paketHaritasi = {
-                "tum": "Güvenli ve İleri Sürüş Teknikleri (Tüm Paket)",
-                "teorik": "Teorik Eğitim Paketi",
-                "kapali": "Kapalı Alan Eğitim Paketi",
-                "yol": "Yol Sürüş Eğitim Paketi"
-            };
 
             tumBasvurular.forEach((veri) => {
                 const kKursiyerAd = String(veri.ad || "");
@@ -219,15 +220,59 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         };
 
+        if (exportBtn) {
+            exportBtn.addEventListener('click', function() {
+                if (tumBasvurular.length === 0) {
+                    alert("Dışa aktarılacak herhangi bir başvuru kaydı bulunmamaktadır.");
+                    return;
+                }
+                
+                const aramaKelimesi = aramaInput ? aramaInput.value.toLowerCase().trim() : "";
+                const secilenDurum = durumFiltre ? durumFiltre.value : "hepsi";
+
+                let csvIcerik = "\uFEFFKursiyer Adı Soyadı;Telefon;Yaş;Meslek;Motosiklet;Tecrübe;Talep Edilen Eğitim;Durum;Yönetici Notu\n";
+
+                tumBasvurular.forEach((veri) => {
+                    const kKursiyerAd = String(veri.ad || "");
+                    const kKursiyerSoyad = String(veri.soyad || "");
+                    const adSoyad = (kKursiyerAd + " " + kKursiyerSoyad).toLowerCase();
+                    const telefon = veri.telefon ? String(veri.telefon).toLowerCase() : "";
+                    
+                    const aramaUyumlu = adSoyad.includes(aramaKelimesi) || telefon.includes(aramaKelimesi);
+                    const durumUyumlu = secilenDurum === "hepsi" || String(veri.durum || "beklemede") === secilenDurum;
+
+                    if (aramaUyumlu && durumUyumlu) {
+                        const tamAd = `${kKursiyerAd} ${kKursiyerSoyad}`.replace(/;/g, ",");
+                        const telNo = String(veri.telefon || "-").replace(/;/g, ",");
+                        const yas = String(veri.yas || "-").replace(/;/g, ",");
+                        const meslek = String(veri.meslek || "-").replace(/;/g, ",");
+                        const motosiklet = String(veri.motosiklet || "-").replace(/;/g, ",");
+                        const tecrube = String(veri.tecrube || "-").replace(/;/g, ",");
+                        const paketMetni = veri.paketler && Array.isArray(veri.paketler) && veri.paketler.length > 0 
+                            ? veri.paketler.map(p => paketHaritasi[p] || p).join(" + ") 
+                            : "Seçim Yok";
+                        const durum = String(veri.durum || "beklemede");
+                        const yoneticiNotu = String(veri.not || "Not Yok").replace(/;/g, ",").replace(/\n/g, " ");
+
+                        csvIcerik += `"${tamAd}";"${telNo}";"${yas}";"${meslek}";"${motosiklet}";"${tecrube}";"${paketMetni.replace(/"/g, '""')}";"${durum}";"${yoneticiNotu.replace(/"/g, '""')}"\n`;
+                    }
+                });
+
+                const blob = new Blob([csvIcerik], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", `FBA_Kursiyer_Raporu_${new Date().toISOString().slice(0,10)}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+        }
+
         window.detayGoster = function(id) {
             const basvuru = tumBasvurular.find(b => b.id === id);
             if (basvuru) {
-                const paketHaritasi = {
-                    "tum": "Güvenli ve İleri Sürüş Teknikleri (Tüm Paket)",
-                    "teorik": "Teorik Eğitim Paketi",
-                    "kapali": "Kapalı Alan Eğitim Paketi",
-                    "yol": "Yol Sürüş Eğitim Paketi"
-                };
                 document.getElementById('modal-isim').innerText = String(basvuru.ad || "") + " " + String(basvuru.soyad || "");
                 document.getElementById('modal-yas').innerText = basvuru.yas || "-";
                 document.getElementById('modal-meslek').innerText = basvuru.meslek || "-";
@@ -363,7 +408,7 @@ window.durumDegistir = async function(id, yeniDurum) {
 };
 
 window.basvuruSil = async function(id) {
-    if (confirm("Bu kursiyer kaydını kalıcı olarak silmek istediğine emin misiniz?")) {
+    if (confirm("Bu kursiyer kaydını kalıcı olarak silmek istediğinize emin mısınız?")) {
         try {
             await deleteDoc(doc(db, "basvurular", id));
         } catch (error) {
