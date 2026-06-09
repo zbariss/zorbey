@@ -232,12 +232,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     const temizNumara = whatsappNumarasiTemizle(veri.telefon);
                     
-                    // Akıllı Mesaj Ayrıştırma Motoru
                     let taslakMesaj = "";
-                    if (veri.egitimTarihi && veri.egitimSaati) {
-                        const parcalar = veri.egitimTarihi.split("-");
-                        const temizTarih = parcalar.length === 3 ? `${parcalar[2]}.${parcalar[1]}.${parcalar[0]}` : veri.egitimTarihi;
-                        taslakMesaj = encodeURIComponent(`Merhaba ${kKursiyerAd} ${kKursiyerSoyad},\n\nFatih Barış Akademi bünyesindeki direksiyon eğitiminiz ${temizTarih} günü saat ${veri.egitimSaati} olarak planlanmıştır. Belirtilen gün ve saatte eğitim alanında hazır bulunmanızı rica eder, güvenli sürüşler dileriz.`);
+                    if (veri.egitimBaslangicTarihi && veri.egitimBitisTarihi) {
+                        const tBas = veri.egitimBaslangicTarihi.split("-").reverse().join(".");
+                        const tBit = veri.egitimBitisTarihi.split("-").reverse().join(".");
+                        taslakMesaj = encodeURIComponent(`Merhaba ${kKursiyerAd} ${kKursiyerSoyad},\n\nFatih Barış Akademi bünyesindeki direksiyon eğitiminiz ${tBas} - ${tBit} tarihleri arasında (bu tarihler dahil) planlanmıştır. Belirtilen günlerde eğitim alanında hazır bulunmanızı rica eder, güvenli sürüşler dileriz.`);
                     } else {
                         taslakMesaj = encodeURIComponent(`Merhaba ${kKursiyerAd} ${kKursiyerSoyad},\n\nFatih Barış Akademi web sitemiz üzerinden yapmış olduğunuz "Motosiklet Güvenli ve İleri Sürüş Teknikleri" ön başvurunuz tarafımıza ulaşmıştır. Eğitim sürecini planlamak ve detayları görüşmek adına müsait olduğunuz bir zaman dilimini iletebilir misiniz?\n\nİyi günler, güvenli sürüşler dileriz.`);
                     }
@@ -250,7 +249,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             <td>
                                 <b>${kKursiyerAd} ${kKursiyerSoyad}</b><br>
                                 <small style="color: #64748b;">Yaş: ${veri.yas || "-"} | ${veri.meslek || "-"}</small>
-                                ${veri.egitimTarihi ? `<br><span style="color: #3b82f6; font-size: 11px; font-weight: 600;"><i class="fa-solid fa-calendar-day"></i> P: ${veri.egitimTarihi.split("-").reverse().join(".")} - ${veri.egitimSaati}</span>` : ""}
+                                ${veri.egitimBaslangicTarihi ? `<br><span style="color: #3b82f6; font-size: 11px; font-weight: 600;"><i class="fa-solid fa-calendar-day"></i> P: ${veri.egitimBaslangicTarihi.split("-").reverse().join(".")} - ${veri.egitimBitisTarihi.split("-").reverse().join(".")}</span>` : ""}
                             </td>
                             <td>
                                 <div style="display: flex; flex-direction: column; gap: 6px;">
@@ -352,33 +351,27 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (el) el.innerText = elements[id];
             });
 
-            // --- Takvim Kartı Rendering Motoru ---
+            // --- Takvim Barı Arası Rendering Motoru ---
             const takvimListesiEl = document.getElementById('yaklasan-egitimler-listesi');
             if (takvimListesiEl) {
-                // Bugünden itibaren ileri tarihli randevuları süz (Canlı zaman 2026-06-09 baz alınmıştır)
-                const planliEgitimler = tumBasvurular.filter(b => b.egitimTarihi && b.egitimTarihi >= "2026-06-09" && b.durum !== "arsiv" && b.durum !== "iptal");
+                const planliEgitimler = tumBasvurular.filter(b => b.egitimBaslangicTarihi && b.egitimBaslangicTarihi >= "2026-06-09" && b.durum !== "arsiv" && b.durum !== "iptal");
                 
-                planliEgitimler.sort((a, b) => {
-                    if (a.egitimTarihi !== b.egitimTarihi) return a.egitimTarihi.localeCompare(b.egitimTarihi);
-                    return a.egitimSaati.localeCompare(b.egitimSaati);
-                });
+                planliEgitimler.sort((a, b) => a.egitimBaslangicTarihi.localeCompare(b.egitimBaslangicTarihi));
 
                 if (planliEgitimler.length === 0) {
-                    takvimListesiEl.innerHTML = `<div style="color: #64748b; font-size: 14px; grid-column: 1 / -1; padding: 5px;">Önümüzdeki günlerde planlanmış aktif bir eğitim randevusu bulunmuyor.</div>`;
+                    takvimListesiEl.innerHTML = `<div style="color: #64748b; font-size: 14px; grid-column: 1 / -1; padding: 5px;">Planlanmış aktif bir eğitim bulunmuyor.</div>`;
                 } else {
                     let takvimHtml = "";
-                    planliEgitimler.slice(0, 8).forEach(b => { // Maksimum yaklaşan 8 randevuyu göster
-                        const temizTarih = b.egitimTarihi.split("-").reverse().join(".");
+                    planliEgitimler.slice(0, 8).forEach(b => {
+                        const tBasGoster = b.egitimBaslangicTarihi.split("-").reverse().join(".");
+                        const tBitGoster = b.egitimBitisTarihi.split("-").reverse().join(".");
                         takvimHtml += `
                             <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 6px;">
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 5px;">
-                                    <b style="color: #ffffff; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${b.ad} ${b.soyad}</b>
-                                    <span style="background: rgba(59, 130, 246, 0.1); color: #3b82f6; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 4px; white-space: nowrap;">${b.egitimSaati}</span>
+                                <b style="color: #ffffff; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${b.ad} ${b.soyad}</b>
+                                <div style="color: #94a3b8; font-size: 12px; display: flex; align-items: center; gap: 5px; font-weight: 500;">
+                                    <i class="fa-solid fa-calendar-days" style="color: #ff4500;"></i> ${tBasGoster} - ${tBitGoster}
                                 </div>
-                                <div style="color: #94a3b8; font-size: 12px; display: flex; align-items: center; gap: 4px;">
-                                    <i class="fa-solid fa-calendar-day" style="color: #ff4500;"></i> ${temizTarih}
-                                </div>
-                                <div style="color: #64748b; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%;">
+                                <div style="color: #64748b; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                     <i class="fa-solid fa-motorcycle"></i> ${b.motosiklet || "-"}
                                 </div>
                             </div>
@@ -400,7 +393,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const aramaKelimesi = aramaInput ? aramaInput.value.toLowerCase().trim() : "";
                 const secilenDurum = durumFiltre ? durumFiltre.value : "aktif";
 
-                let csvIcerik = "\uFEFFKursiyer Adı Soyadı;Telefon;Yaş;Meslek;Motosiklet;Tecrübe;Talep Edilen Eğitim;Durum;Eğitim Tarihi;Eğitim Saati;Yönetici Notu\n";
+                let csvIcerik = "\uFEFFKursiyer Adı Soyadı;Telefon;Yaş;Meslek;Motosiklet;Tecrübe;Talep Edilen Eğitim;Durum;Başlangıç Tarihi;Bitiş Tarihi;Yönetici Notu\n";
 
                 tumBasvurular.forEach((veri) => {
                     const kKursiyerAd = String(veri.ad || "");
@@ -423,11 +416,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         const tecrube = String(veri.tecrube || "-").replace(/;/g, ",");
                         const paketMetni = veri.paketler && Array.isArray(veri.paketler) && veri.paketler.length > 0 ? veri.paketler.map(p => paketHaritasi[p] || p).join(" + ") : "Seçim Yok";
                         const durum = durumMetinHaritasi[sDurum] || sDurum;
-                        const egTarih = veri.egitimTarihi || "-";
-                        const egSaat = veri.egitimSaati || "-";
+                        const tBas = veri.egitimBaslangicTarihi || "-";
+                        const tBit = veri.egitimBitisTarihi || "-";
                         const yoneticiNotu = String(veri.not || "Not Yok").replace(/;/g, ",").replace(/\n/g, " ");
 
-                        csvIcerik += `"${tamAd}";"${telNo}";"${yas}";"${meslek}";"${motosiklet}";"${tecrube}";"${paketMetni.replace(/"/g, '""')}";"${durum}";"${egTarih}";"${egSaat}";"${yoneticiNotu.replace(/"/g, '""')}"\n`;
+                        csvIcerik += `"${tamAd}";"${telNo}";"${yas}";"${meslek}";"${motosiklet}";"${tecrube}";"${paketMetni.replace(/"/g, '""')}";"${durum}";"${tBas}";"${tBit}";"${yoneticiNotu.replace(/"/g, '""')}"\n`;
                     }
                 });
 
@@ -452,8 +445,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('modal-tecrube').innerText = basvuru.tecrube || "-";
                 document.getElementById('modal-neden').innerText = basvuru.neden || "Belirtilmemiş";
                 document.getElementById('modal-not-input').value = basvuru.not || "";
-                document.getElementById('modal-tarih-input').value = basvuru.egitimTarihi || "";
-                document.getElementById('modal-saat-input').value = basvuru.egitimSaati || "";
+                
+                // Yenilenen Lüks İki Tarih Değerini Eşleme
+                document.getElementById('modal-tarih-baslangic-input').value = basvuru.egitimBaslangicTarihi || "";
+                document.getElementById('modal-tarih-bitis-input').value = basvuru.egitimBitisTarihi || "";
                 
                 document.getElementById('modal-not-kaydet-btn').setAttribute('onclick', `notKaydet('${basvuru.id}')`);
                 document.getElementById('modal-randevu-kaydet-btn').setAttribute('onclick', `randevuKaydet('${basvuru.id}')`);
@@ -591,21 +586,20 @@ window.notKaydet = async function(id) {
     }
 };
 
-// --- Akıllı Randevu Kayıt Fonksiyonu ---
 window.randevuKaydet = async function(id) {
-    const tarihVerisi = document.getElementById('modal-tarih-input').value;
-    const saatVerisi = document.getElementById('modal-saat-input').value;
+    const baslangicVerisi = document.getElementById('modal-tarih-baslangic-input').value;
+    const bitisVerisi = document.getElementById('modal-tarih-bitis-input').value;
     const btn = document.getElementById('modal-randevu-kaydet-btn');
     const orjinalMetin = btn.innerText;
-    btn.innerText = "İşleniyor...";
+    btn.innerText = "Planlanıyor...";
     btn.disabled = true;
 
     try {
         await updateDoc(doc(getFirestore(), "basvurular", id), { 
-            egitimTarihi: tarihVerisi,
-            egitimSaati: saatVerisi
+            egitimBaslangicTarihi: baslangicVerisi,
+            egitimBitisTarihi: bitisVerisi
         });
-        alert("Eğitim randevusu başarıyla planlandı.");
+        alert("Eğitim tarih aralığı başarıyla planlandı.");
     } catch (error) {
         console.error("Randevu planlama hatası:", error);
         alert("Randevu kaydedilirken bir hata oluştu.");
