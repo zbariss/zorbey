@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { 
     getFirestore, collection, addDoc, serverTimestamp, 
-    query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, getDoc, setDoc
+    query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, setDoc
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { 
     getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut 
@@ -156,7 +156,9 @@ document.addEventListener("DOMContentLoaded", function () {
             let filtrelenmisAdet = 0;
 
             tumBasvurular.forEach((veri) => {
-                const adSoyad = (veri.ad + " " + veri.soyad).toLowerCase();
+                const kKursiyerAd = veri.ad || "";
+                const kKursiyerSoyad = veri.soyad || "";
+                const adSoyad = (kKursiyerAd + " " + kKursiyerSoyad).toLowerCase();
                 const telefon = veri.telefon ? veri.telefon.toLowerCase() : "";
                 
                 const aramaUyumlu = adSoyad.includes(aramaKelimesi) || telefon.includes(aramaKelimesi);
@@ -168,20 +170,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     htmlIcerik += `
                         <tr>
                             <td>
-                                <b>${veri.ad} ${veri.soyad}</b><br>
-                                <small style="color: #64748b;">Yaş: ${veri.yas} | ${veri.meslek}</small>
+                                <b>${kKursiyerAd} ${kKursiyerSoyad}</b><br>
+                                <small style="color: #64748b;">Yaş: ${veri.yas || "-"} | ${veri.meslek || "-"}</small>
                             </td>
                             <td>
-                                <a href="tel:${veri.telefon}" style="color: #ff4500; text-decoration: none; font-weight: 500;">
-                                    <i class="fa-solid fa-phone"></i> ${veri.telefon}
+                                <a href="tel:${veri.telefon || ""}" style="color: #ff4500; text-decoration: none; font-weight: 500;">
+                                    <i class="fa-solid fa-phone"></i> ${veri.telefon || "-"}
                                 </a>
                             </td>
                             <td>
-                                <b>${veri.motosiklet}</b><br>
-                                <small style="color: #64748b;">Tecrübe: ${veri.tecrube}</small>
+                                <b>${veri.motosiklet || "-"}</b><br>
+                                <small style="color: #64748b;">Tecrübe: ${veri.tecrube || "-"}</small>
                             </td>
                             <td><span style="color: #ffffff; font-size: 14px;">${paketMetni}</span></td>
-                            <td><span class="status-badge status-${veri.durum}">${veri.durum}</span></td>
+                            <td><span class="status-badge status-${veri.durum || "beklemede"}">${veri.durum || "beklemede"}</span></td>
                             <td>
                                 <select class="action-btn" onchange="durumDegistir('${veri.id}', this.value)">
                                     <option value="beklemede" ${veri.durum === 'beklemede' ? 'selected' : ''}>Beklemede</option>
@@ -208,11 +210,11 @@ document.addEventListener("DOMContentLoaded", function () {
         window.detayGoster = function(id) {
             const basvuru = tumBasvurular.find(b => b.id === id);
             if (basvuru) {
-                document.getElementById('modal-isim').innerText = basvuru.ad + " " + basvuru.soyad;
-                document.getElementById('modal-yas').innerText = basvuru.yas;
-                document.getElementById('modal-meslek').innerText = basvuru.meslek;
-                document.getElementById('modal-motosiklet').innerText = basvuru.motosiklet;
-                document.getElementById('modal-tecrube').innerText = basvuru.tecrube;
+                document.getElementById('modal-isim').innerText = (basvuru.ad || "") + " " + (basvuru.soyad || "");
+                document.getElementById('modal-yas').innerText = basvuru.yas || "-";
+                document.getElementById('modal-meslek').innerText = basvuru.meslek || "-";
+                document.getElementById('modal-motosiklet').innerText = basvuru.motosiklet || "-";
+                document.getElementById('modal-tecrube').innerText = basvuru.tecrube || "-";
                 document.getElementById('modal-neden').innerText = basvuru.neden || "Belirtilmemiş";
                 document.getElementById('detay-modal').style.display = 'flex';
             }
@@ -258,6 +260,8 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('stat-onaylandi').innerText = countOnaylandi;
 
             listeleyiGuncelle();
+        }, (error) => {
+            console.error("Firestore baglanti hatasi:", error);
         });
     }
 
