@@ -154,6 +154,13 @@ document.addEventListener("DOMContentLoaded", function () {
             let htmlIcerik = "";
             let filtrelenmisAdet = 0;
 
+            const paketHaritasi = {
+                "tum": "Güvenli ve İleri Sürüş Teknikleri (Tüm Paket)",
+                "teorik": "Teorik Eğitim Paketi",
+                "kapali": "Kapalı Alan Eğitim Paketi",
+                "yol": "Yol Sürüş Eğitim Paketi"
+            };
+
             tumBasvurular.forEach((veri) => {
                 const kKursiyerAd = String(veri.ad || "");
                 const kKursiyerSoyad = String(veri.soyad || "");
@@ -165,7 +172,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (aramaUyumlu && durumUyumlu) {
                     filtrelenmisAdet++;
-                    const paketMetni = veri.paketler && Array.isArray(veri.paketler) && veri.paketler.length > 0 ? veri.paketler.join(", ") : "Seçim Yok";
+                    
+                    const paketMetni = veri.paketler && Array.isArray(veri.paketler) && veri.paketler.length > 0 
+                        ? veri.paketler.map(p => paketHaritasi[p] || p).join(", ") 
+                        : "Seçim Yok";
+
                     htmlIcerik += `
                         <tr>
                             <td>
@@ -211,6 +222,12 @@ document.addEventListener("DOMContentLoaded", function () {
         window.detayGoster = function(id) {
             const basvuru = tumBasvurular.find(b => b.id === id);
             if (basvuru) {
+                const paketHaritasi = {
+                    "tum": "Güvenli ve İleri Sürüş Teknikleri (Tüm Paket)",
+                    "teorik": "Teorik Eğitim Paketi",
+                    "kapali": "Kapalı Alan Eğitim Paketi",
+                    "yol": "Yol Sürüş Eğitim Paketi"
+                };
                 document.getElementById('modal-isim').innerText = String(basvuru.ad || "") + " " + String(basvuru.soyad || "");
                 document.getElementById('modal-yas').innerText = basvuru.yas || "-";
                 document.getElementById('modal-meslek').innerText = basvuru.meslek || "-";
@@ -346,7 +363,7 @@ window.durumDegistir = async function(id, yeniDurum) {
 };
 
 window.basvuruSil = async function(id) {
-    if (confirm("Bu kursiyer kaydını kalıcı olarak silmek istediğinize emin misiniz?")) {
+    if (confirm("Bu kursiyer kaydını kalıcı olarak silmek istediğine emin misiniz?")) {
         try {
             await deleteDoc(doc(db, "basvurular", id));
         } catch (error) {
