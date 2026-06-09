@@ -282,6 +282,15 @@
             </div>
         </div>
 
+        <div class="data-card" style="margin-bottom: 25px; background: #1e293b; border: 1px solid #334155;">
+            <h3 style="color: #ffffff; font-size: 16px; margin-top: 0; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-calendar-days" style="color: #3b82f6;"></i> Yaklaşan Eğitim Programı
+            </h3>
+            <div id="yaklasan-egitimler-listesi" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 15px;">
+                <div style="color: #64748b; font-size: 14px; padding: 5px;">Yükleniyor...</div>
+            </div>
+        </div>
+
         <div class="data-card">
             <h2 style="color: #ffffff; font-size: 18px; margin-top: 0; margin-bottom: 15px;">Eğitim Paketi Fiyat Ayarları</h2>
             <form id="admin-fiyat-form" class="config-form">
@@ -389,9 +398,18 @@
             </div>
             <div style="border-top: 1px solid #334155; padding-top: 15px; margin-top: 15px;">
                 <span style="color: #64748b; font-size: 13px; display:block; margin-bottom: 5px;">Yönetici Özel Notu</span>
-                <textarea id="modal-not-input" style="width: 100%; height: 80px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #ffffff; padding: 10px; font-size: 14px; resize: none; box-sizing: border-box;"></textarea>
-                <button id="modal-not-kaydet-btn" style="background: #ff4500; color: #ffffff; border: none; font-weight: 600; padding: 8px 15px; border-radius: 6px; margin-top: 10px; cursor: pointer; float: right; font-size: 13px;">Notu Kaydet</button>
+                <textarea id="modal-not-input" style="width: 100%; height: 60px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #ffffff; padding: 10px; font-size: 14px; resize: none; box-sizing: border-box;"></textarea>
+                <button id="modal-not-kaydet-btn" style="background: #ff4500; color: #ffffff; border: none; font-weight: 600; padding: 8px 15px; border-radius: 6px; margin-top: 5px; cursor: pointer; float: right; font-size: 13px;">Notu Kaydet</button>
                 <div style="clear: both;"></div>
+            </div>
+            
+            <div style="border-top: 1px solid #334155; padding-top: 15px; margin-top: 15px;">
+                <span style="color: #64748b; font-size: 13px; display:block; margin-bottom: 5px;">Eğitim Tarihi ve Saati Planlama</span>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="date" id="modal-tarih-input" style="flex: 1; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #ffffff; padding: 8px; font-size: 14px; color-scheme: dark;">
+                    <input type="time" id="modal-saat-input" style="flex: 1; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #ffffff; padding: 8px; font-size: 14px; color-scheme: dark;">
+                    <button id="modal-randevu-kaydet-btn" style="background: #3b82f6; color: #ffffff; border: none; font-weight: 600; padding: 9px 15px; border-radius: 6px; cursor: pointer; font-size: 13px;">Planla</button>
+                </div>
             </div>
         </div>
     </div>
