@@ -241,40 +241,54 @@
             </div>
         </div>
 
-        <div class="stats-container" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
-            <div class="stats-card">
-                <div class="stats-icon" style="color: #ff4500;"><i class="fa-solid fa-folder-open"></i></div>
+        <div class="stats-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px;">
+            <div class="stats-card" style="padding: 15px; gap: 12px;">
+                <div class="stats-icon" style="color: #ff4500; width: 40px; height: 40px; font-size: 20px;"><i class="fa-solid fa-folder-open"></i></div>
                 <div>
-                    <h3 id="stat-toplam">0</h3>
-                    <p>Toplam</p>
+                    <h3 id="stat-toplam" style="font-size: 20px;">0</h3>
+                    <p style="font-size: 11px;">Toplam Aktif</p>
                 </div>
             </div>
-            <div class="stats-card">
-                <div class="stats-icon" style="color: #eab308;"><i class="fa-solid fa-hourglass-half"></i></div>
+            <div class="stats-card" style="padding: 15px; gap: 12px;">
+                <div class="stats-icon" style="color: #eab308; width: 40px; height: 40px; font-size: 20px;"><i class="fa-solid fa-hourglass-half"></i></div>
                 <div>
-                    <h3 id="stat-beklemede">0</h3>
-                    <p>Bekleyen</p>
+                    <h3 id="stat-beklemede" style="font-size: 20px;">0</h3>
+                    <p style="font-size: 11px;">Bekleyen</p>
                 </div>
             </div>
-            <div class="stats-card">
-                <div class="stats-icon" style="color: #3b82f6;"><i class="fa-solid fa-phone"></i></div>
+            <div class="stats-card" style="padding: 15px; gap: 12px;">
+                <div class="stats-icon" style="color: #3b82f6; width: 40px; height: 40px; font-size: 20px;"><i class="fa-solid fa-phone"></i></div>
                 <div>
-                    <h3 id="stat-arandi">0</h3>
-                    <p>Aranan</p>
+                    <h3 id="stat-arandi" style="font-size: 20px;">0</h3>
+                    <p style="font-size: 11px;">Aranan</p>
                 </div>
             </div>
-            <div class="stats-card">
-                <div class="stats-icon" style="color: #22c55e;"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="stats-card" style="padding: 15px; gap: 12px;">
+                <div class="stats-icon" style="color: #f97316; width: 40px; height: 40px; font-size: 20px;"><i class="fa-solid fa-hand-holding-dollar"></i></div>
                 <div>
-                    <h3 id="stat-onaylandi">0</h3>
-                    <p>Onaylanan</p>
+                    <h3 id="stat-kapora" style="font-size: 20px;">0</h3>
+                    <p style="font-size: 11px;">Kapora Alındı</p>
                 </div>
             </div>
-            <div class="stats-card" style="border: 1px solid rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.02);">
-                <div class="stats-icon" style="color: #22c55e; background: #0f172a;"><i class="fa-solid fa-wallet"></i></div>
+            <div class="stats-card" style="padding: 15px; gap: 12px;">
+                <div class="stats-icon" style="color: #22c55e; width: 40px; height: 40px; font-size: 20px;"><i class="fa-solid fa-circle-check"></i></div>
                 <div>
-                    <h3 id="stat-ciro">0 TL</h3>
-                    <p>Öngörülen Ciro</p>
+                    <h3 id="stat-onaylandi" style="font-size: 20px;">0</h3>
+                    <p style="font-size: 11px;">Kesin Kayıt</p>
+                </div>
+            </div>
+            <div class="stats-card" style="padding: 15px; gap: 12px;">
+                <div class="stats-icon" style="color: #0d9488; width: 40px; height: 40px; font-size: 20px;"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div>
+                    <h3 id="stat-tamamlandi" style="font-size: 20px;">0</h3>
+                    <p style="font-size: 11px;">Mezunlar</p>
+                </div>
+            </div>
+            <div class="stats-card" style="padding: 15px; gap: 12px; border: 1px solid rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.02); min-width: 170px;">
+                <div class="stats-icon" style="color: #22c55e; background: #0f172a; width: 40px; height: 40px; font-size: 20px;"><i class="fa-solid fa-wallet"></i></div>
+                <div>
+                    <h3 id="stat-ciro" style="font-size: 18px;">0 TL</h3>
+                    <p style="font-size: 11px;">Öngörülen Ciro</p>
                 </div>
             </div>
         </div>

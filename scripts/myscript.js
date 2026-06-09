@@ -302,7 +302,8 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!sonSnapshotVerisi) return;
 
             tumBasvurular = [];
-            let countToplam = 0, countBeklemede = 0, countArandi = 0, countOnaylandi = 0;
+            // Net, Ayrıştırılmış Ayrık Durum Sayaçları
+            let countToplam = 0, countBeklemede = 0, countArandi = 0, countKapora = 0, countOnaylandi = 0, countTamamlandi = 0;
             let dTum = 0, dTeorik = 0, dKapali = 0, dYol = 0, toplamCiro = 0;
 
             const fiyatTum = Number(String(aktifFiyatlar.tum).replace(/[^0-9]/g, '')) || 0;
@@ -316,11 +317,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const sDurum = veri.durum || "beklemede";
                 
+                // Arşiv harici tüm aktif operasyonu say
                 if (sDurum !== "arsiv") {
                     countToplam++;
                     if (sDurum === "beklemede") countBeklemede++;
                     else if (sDurum === "arandi") countArandi++;
-                    else if (sDurum === "onaylandi" || sDurum === "kapora" || sDurum === "tamamlandi") countOnaylandi++;
+                    else if (sDurum === "kapora") countKapora++;
+                    else if (sDurum === "onaylandi") countOnaylandi++;
+                    else if (sDurum === "tamamlandi") countTamamlandi++;
                 }
 
                 if (veri.paketler && Array.isArray(veri.paketler)) {
@@ -339,10 +343,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 return tB - tA;
             });
 
+            // Yeni DOM Bağlantıları Mühürlendi
             document.getElementById('stat-toplam').innerText = countToplam;
             document.getElementById('stat-beklemede').innerText = countBeklemede;
             document.getElementById('stat-arandi').innerText = countArandi;
+            document.getElementById('stat-kapora').innerText = countKapora;
             document.getElementById('stat-onaylandi').innerText = countOnaylandi;
+            document.getElementById('stat-tamamlandi').innerText = countTamamlandi;
             document.getElementById('stat-ciro').innerText = toplamCiro.toLocaleString('tr-TR') + " TL";
 
             const elements = { 'dist-tum': dTum, 'dist-teorik': dTeorik, 'dist-kapali': dKapali, 'dist-yol': dYol };
@@ -418,7 +425,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         const durum = durumMetinHaritasi[sDurum] || sDurum;
                         const tBas = veri.egitimBaslangicTarihi || "-";
                         const tBit = veri.egitimBitisTarihi || "-";
-                        const yoneticiNotu = String(veri.not || "Not Yok").replace(/;/g, ",").replace(/\n/g, " ");
+                        const yoneticiNotu = String(veri.not || "Not Yok").replace(/;/g, ",");
 
                         csvIcerik += `"${tamAd}";"${telNo}";"${yas}";"${meslek}";"${motosiklet}";"${tecrube}";"${paketMetni.replace(/"/g, '""')}";"${durum}";"${tBas}";"${tBit}";"${yoneticiNotu.replace(/"/g, '""')}"\n`;
                     }
@@ -446,7 +453,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('modal-neden').innerText = basvuru.neden || "Belirtilmemiş";
                 document.getElementById('modal-not-input').value = basvuru.not || "";
                 
-                // Yenilenen Lüks İki Tarih Değerini Eşleme
                 document.getElementById('modal-tarih-baslangic-input').value = basvuru.egitimBaslangicTarihi || "";
                 document.getElementById('modal-tarih-bitis-input').value = basvuru.egitimBitisTarihi || "";
                 
