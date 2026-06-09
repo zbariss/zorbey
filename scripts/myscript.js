@@ -217,6 +217,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('modal-motosiklet').innerText = basvuru.motosiklet || "-";
                 document.getElementById('modal-tecrube').innerText = basvuru.tecrube || "-";
                 document.getElementById('modal-neden').innerText = basvuru.neden || "Belirtilmemiş";
+                document.getElementById('modal-not-input').value = basvuru.not || "";
+                document.getElementById('modal-not-kaydet-btn').setAttribute('onclick', `notKaydet('${basvuru.id}')`);
                 document.getElementById('detay-modal').style.display = 'flex';
             }
         };
@@ -350,5 +352,25 @@ window.basvuruSil = async function(id) {
         } catch (error) {
             console.error("Kayıt silinirken hata:", error);
         }
+    }
+};
+
+window.notKaydet = async function(id) {
+    const notMetni = document.getElementById('modal-not-input').value;
+    const btn = document.getElementById('modal-not-kaydet-btn');
+    const orjinalMetin = btn.innerText;
+    btn.innerText = "Kaydediliyor...";
+    btn.disabled = true;
+
+    try {
+        const basvuruRef = doc(db, "basvurular", id);
+        await updateDoc(basvuruRef, { not: notMetni });
+        alert("Not başarıyla hafızaya alındı patron!");
+    } catch (error) {
+        console.error("Not kaydetme hatası:", error);
+        alert("Not kaydedilirken bir hata oluştu.");
+    } finally {
+        btn.innerText = orjinalMetin;
+        btn.disabled = false;
     }
 };
