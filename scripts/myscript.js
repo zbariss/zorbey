@@ -188,6 +188,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                     <option value="arandi" ${veri.durum === 'arandi' ? 'selected' : ''}>Arandı</option>
                                     <option value="onaylandi" ${veri.durum === 'onaylandi' ? 'selected' : ''}>Onaylandı</option>
                                 </select>
+                                <button class="action-btn" onclick="detayGoster('${veri.id}')" style="color: #3b82f6; border-color: rgba(59, 130, 246, 0.2); margin-left: 5px;">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
                                 <button class="action-btn" onclick="basvuruSil('${veri.id}')" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.2); margin-left: 5px;">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
@@ -200,6 +203,23 @@ document.addEventListener("DOMContentLoaded", function () {
             if (filtrelenmisAdet === 0) {
                 tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 40px;">Arama kriterlerine uygun sonuç bulunamadı patron.</td></tr>`;
             }
+        };
+
+        window.detayGoster = function(id) {
+            const basvuru = tumBasvurular.find(b => b.id === id);
+            if (basvuru) {
+                document.getElementById('modal-isim').innerText = basvuru.ad + " " + basvuru.soyad;
+                document.getElementById('modal-yas').innerText = basvuru.yas;
+                document.getElementById('modal-meslek').innerText = basvuru.meslek;
+                document.getElementById('modal-motosiklet').innerText = basvuru.motosiklet;
+                document.getElementById('modal-tecrube').innerText = basvuru.tecrube;
+                document.getElementById('modal-neden').innerText = basvuru.neden || "Belirtilmemiş";
+                document.getElementById('detay-modal').style.display = 'flex';
+            }
+        };
+
+        window.modalKapat = function() {
+            document.getElementById('detay-modal').style.display = 'none';
         };
 
         if (aramaInput) aramaInput.addEventListener('input', listeleyiGuncelle);
