@@ -155,21 +155,21 @@ document.addEventListener("DOMContentLoaded", function () {
             let filtrelenmisAdet = 0;
 
             tumBasvurular.forEach((veri) => {
-                const kKursiyerAd = veri.ad || "";
-                const kKursiyerSoyad = veri.soyad || "";
+                const kKursiyerAd = String(veri.ad || "");
+                const kKursiyerSoyad = String(veri.soyad || "");
                 const adSoyad = (kKursiyerAd + " " + kKursiyerSoyad).toLowerCase();
-                const telefon = veri.telefon ? veri.telefon.toLowerCase() : "";
+                const telefon = veri.telefon ? String(veri.telefon).toLowerCase() : "";
                 
                 const aramaUyumlu = adSoyad.includes(aramaKelimesi) || telefon.includes(aramaKelimesi);
-                const durumUyumlu = secilenDurum === "hepsi" || veri.durum === secilenDurum;
+                const durumUyumlu = secilenDurum === "hepsi" || String(veri.durum || "beklemede") === secilenDurum;
 
                 if (aramaUyumlu && durumUyumlu) {
                     filtrelenmisAdet++;
-                    const paketMetni = veri.paketler && veri.paketler.length > 0 ? veri.paketler.join(", ") : "Seçim Yok";
+                    const paketMetni = veri.paketler && Array.isArray(veri.paketler) && veri.paketler.length > 0 ? veri.paketler.join(", ") : "Seçim Yok";
                     htmlIcerik += `
                         <tr>
                             <td>
-                                <b>${veri.ad || "-"} ${veri.soyad || ""}</b><br>
+                                <b>${kKursiyerAd} ${kKursiyerSoyad}</b><br>
                                 <small style="color: #64748b;">Yaş: ${veri.yas || "-"} | ${veri.meslek || "-"}</small>
                             </td>
                             <td>
@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
         window.detayGoster = function(id) {
             const basvuru = tumBasvurular.find(b => b.id === id);
             if (basvuru) {
-                document.getElementById('modal-isim').innerText = (basvuru.ad || "") + " " + (basvuru.soyad || "");
+                document.getElementById('modal-isim').innerText = String(basvuru.ad || "") + " " + String(basvuru.soyad || "");
                 document.getElementById('modal-yas').innerText = basvuru.yas || "-";
                 document.getElementById('modal-meslek').innerText = basvuru.meslek || "-";
                 document.getElementById('modal-motosiklet').innerText = basvuru.motosiklet || "-";
@@ -226,49 +226,40 @@ document.addEventListener("DOMContentLoaded", function () {
         if (aramaInput) aramaInput.addEventListener('input', listeleyiGuncelle);
         if (durumFiltre) durumFiltre.addEventListener('change', listeleyiGuncelle);
 
-        try {
-            const q = collection(db, "basvurular");
-            onSnapshot(q, (snapshot) => {
-                tumBasvurular = [];
-                let countToplam = 0;
-                let countBeklemede = 0;
-                let countArandi = 0;
-                let countOnaylandi = 0;
+        const q = collection(db, "basvurular");
+        onSnapshot(q, (snapshot) => {
+            tumBasvurular = [];
+            let countToplam = 0;
+            let countBeklemede = 0;
+            let countArandi = 0;
+            let countOnaylandi = 0;
 
-                snapshot.forEach((docSnap) => {
-                    const veri = docSnap.data();
-                    tumBasvurular.push({ id: docSnap.id, ...veri });
+            snapshot.forEach((docSnap) => {
+                const veri = docSnap.data();
+                tumBasvurular.push({ id: docSnap.id, ...veri });
 
-                    countToplam++;
-                    if (veri.durum === "beklemede") countBeklemede++;
-                    else if (veri.durum === "arandi") countArandi++;
-                    else if (veri.durum === "onaylandi") countOnaylandi++;
-                });
-
-                tumBasvurular.sort((a, b) => {
-                    const tA = a.kayitTarihi && a.kayitTarihi.seconds ? a.kayitTarihi.seconds : 0;
-                    const tB = b.kayitTarihi && b.kayitTarihi.seconds ? b.kayitTarihi.seconds : 0;
-                    return tB - tA;
-                });
-
-                document.getElementById('stat-toplam').innerText = countToplam;
-                document.getElementById('stat-beklemede').innerText = countBeklemede;
-                document.getElementById('stat-arandi').innerText = countArandi;
-                document.getElementById('stat-onaylandi').innerText = countOnaylandi;
-
-                listeleyiGuncelle();
-            }, (error) => {
-                tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #ef4444; padding: 40px;">Firebase Hatası: ${error.message}</td></tr>`;
+                countToplam++;
+                const sDurum = veri.durum || "beklemede";
+                if (sDurum === "beklemede") countBeklemede++;
+                else if (sDurum === "arandi") countArandi++;
+                else if (sDurum === "onaylandi") countOnaylandi++;
             });
-        } catch (err) {
-            tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #ef4444; padding: 40px;">Bağlantı Başlatılamadı: ${err.message}</td></tr>`;
-        }
 
-        setTimeout(() => {
-            if (tumBasvurular.length === 0 && tabloGovdesi.innerHTML.includes("Veriler buluttan yükleniyor...")) {
-                tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #eab308; padding: 40px;"><i class="fa-solid fa-triangle-exclamation" style="margin-right: 10px;"></i> Veri gelmesi gecikti. Sayfayı çift tıklayarak açtıysanız lütfen VS Code Live Server kullanın patron.</td></tr>`;
-            }
-        }, 4000);
+            tumBasvurular.sort((a, b) => {
+                const tA = a.kayitTarihi && a.kayitTarihi.seconds ? a.kayitTarihi.seconds : 0;
+                const tB = b.kayitTarihi && b.kayitTarihi.seconds ? b.kayitTarihi.seconds : 0;
+                return tB - tA;
+            });
+
+            document.getElementById('stat-toplam').innerText = countToplam;
+            document.getElementById('stat-beklemede').innerText = countBeklemede;
+            document.getElementById('stat-arandi').innerText = countArandi;
+            document.getElementById('stat-onaylandi').innerText = countOnaylandi;
+
+            listeleyiGuncelle();
+        }, (error) => {
+            console.error(error);
+        });
     }
 
     const fiyatFormu = document.getElementById('admin-fiyat-form');
