@@ -21,6 +21,10 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 document.addEventListener("DOMContentLoaded", function () {
+    let aktifFiyatlar = { teorik: "0", kapali: "0", yol: "0", tum: "0" };
+    let sonSnapshotVerisi = null;
+    let tumBasvurular = [];
+
     const sayacElementleri = document.querySelectorAll('.istatistik-kutu h3');
     if (sayacElementleri.length > 0) {
         const saymaSuresiMilisaniye = 1500;
@@ -138,7 +142,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const tabloGovdesi = document.getElementById('basvuru-tablo-govdesi');
     if (tabloGovdesi) {
-        let tumBasvurular = [];
         const aramaInput = document.getElementById('admin-arama-input');
         const durumFiltre = document.getElementById('admin-durum-filtre');
         const exportBtn = document.getElementById('admin-export-btn');
@@ -220,6 +223,68 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         };
 
+        const metrikleriHesaplaVeGuncelle = () => {
+            if (!sonSnapshotVerisi) return;
+
+            tumBasvurular = [];
+            let countToplam = 0;
+            let countBeklemede = 0;
+            let countArandi = 0;
+            let countOnaylandi = 0;
+
+            let dTum = 0, dTeorik = 0, dKapali = 0, dYol = 0;
+            let toplamCiro = 0;
+
+            const fiyatTum = Number(String(aktifFiyatlar.tum).replace(/[^0-9]/g, '')) || 0;
+            const fiyatTeorik = Number(String(aktifFiyatlar.teorik).replace(/[^0-9]/g, '')) || 0;
+            const fiyatKapali = Number(String(aktifFiyatlar.kapali).replace(/[^0-9]/g, '')) || 0;
+            const fiyatYol = Number(String(aktifFiyatlar.yol).replace(/[^0-9]/g, '')) || 0;
+
+            sonSnapshotVerisi.forEach((docSnap) => {
+                const veri = docSnap.data();
+                tumBasvurular.push({ id: docSnap.id, ...veri });
+
+                countToplam++;
+                const sDurum = veri.durum || "beklemede";
+                if (sDurum === "beklemede") countBeklemede++;
+                else if (sDurum === "arandi") countArandi++;
+                else if (sDurum === "onaylandi") countOnaylandi++;
+
+                if (veri.paketler && Array.isArray(veri.paketler)) {
+                    veri.paketler.forEach(p => {
+                        if (p === "tum") { dTum++; if (sDurum === "onaylandi") toplamCiro += fiyatTum; }
+                        else if (p === "teorik") { dTeorik++; if (sDurum === "onaylandi") toplamCiro += fiyatTeorik; }
+                        else if (p === "kapali") { dKapali++; if (sDurum === "onaylandi") toplamCiro += fiyatKapali; }
+                        else if (p === "yol") { dYol++; if (sDurum === "onaylandi") toplamCiro += fiyatYol; }
+                    });
+                }
+            });
+
+            tumBasvurular.sort((a, b) => {
+                const tA = a.kayitTarihi && a.kayitTarihi.seconds ? a.kayitTarihi.seconds : 0;
+                const tB = b.kayitTarihi && b.kayitTarihi.seconds ? b.kayitTarihi.seconds : 0;
+                return tB - tA;
+            });
+
+            document.getElementById('stat-toplam').innerText = countToplam;
+            document.getElementById('stat-beklemede').innerText = countBeklemede;
+            document.getElementById('stat-arandi').innerText = countArandi;
+            document.getElementById('stat-onaylandi').innerText = countOnaylandi;
+            document.getElementById('stat-ciro').innerText = toplamCiro.toLocaleString('tr-TR') + " TL";
+
+            const distTumEl = document.getElementById('dist-tum');
+            const distTeorikEl = document.getElementById('dist-teorik');
+            const distKapaliEl = document.getElementById('dist-kapali');
+            const distYolEl = document.getElementById('dist-yol');
+
+            if (distTumEl) distTumEl.innerText = dTum;
+            if (distTeorikEl) distTeorikEl.innerText = dTeorik;
+            if (distKapaliEl) distKapaliEl.innerText = dKapali;
+            if (distYolEl) distYolEl.innerText = dYol;
+
+            listeleyiGuncelle();
+        };
+
         if (exportBtn) {
             exportBtn.addEventListener('click', function() {
                 if (tumBasvurular.length === 0) {
@@ -294,35 +359,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const q = collection(db, "basvurular");
         onSnapshot(q, (snapshot) => {
-            tumBasvurular = [];
-            let countToplam = 0;
-            let countBeklemede = 0;
-            let countArandi = 0;
-            let countOnaylandi = 0;
-
-            snapshot.forEach((docSnap) => {
-                const veri = docSnap.data();
-                tumBasvurular.push({ id: docSnap.id, ...veri });
-
-                countToplam++;
-                const sDurum = veri.durum || "beklemede";
-                if (sDurum === "beklemede") countBeklemede++;
-                else if (sDurum === "arandi") countArandi++;
-                else if (sDurum === "onaylandi") countOnaylandi++;
-            });
-
-            tumBasvurular.sort((a, b) => {
-                const tA = a.kayitTarihi && a.kayitTarihi.seconds ? a.kayitTarihi.seconds : 0;
-                const tB = b.kayitTarihi && b.kayitTarihi.seconds ? b.kayitTarihi.seconds : 0;
-                return tB - tA;
-            });
-
-            document.getElementById('stat-toplam').innerText = countToplam;
-            document.getElementById('stat-beklemede').innerText = countBeklemede;
-            document.getElementById('stat-arandi').innerText = countArandi;
-            document.getElementById('stat-onaylandi').innerText = countOnaylandi;
-
-            listeleyiGuncelle();
+            sonSnapshotVerisi = snapshot;
+            metrikleriHesaplaVeGuncelle();
         }, (error) => {
             console.error(error);
         });
@@ -337,6 +375,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('fiyat-input-kapali').value = veriler.kapali || "";
                 document.getElementById('fiyat-input-yol').value = veriler.yol || "";
                 document.getElementById('fiyat-input-tum').value = veriler.tum || "";
+
+                aktifFiyatlar.teorik = veriler.teorik || "0";
+                aktifFiyatlar.kapali = veriler.kapali || "0";
+                aktifFiyatlar.yol = veriler.yol || "0";
+                aktifFiyatlar.tum = veriler.tum || "0";
+
+                if (sonSnapshotVerisi) {
+                    metrikleriHesaplaVeGuncelle();
+                }
             }
         });
 
