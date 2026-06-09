@@ -138,7 +138,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const tabloGovdesi = document.getElementById('basvuru-tablo-govdesi');
     if (tabloGovdesi) {
-        const q = collection(db, "basvurular");
         let tumBasvurular = [];
         const aramaInput = document.getElementById('admin-arama-input');
         const durumFiltre = document.getElementById('admin-durum-filtre');
@@ -227,48 +226,49 @@ document.addEventListener("DOMContentLoaded", function () {
         if (aramaInput) aramaInput.addEventListener('input', listeleyiGuncelle);
         if (durumFiltre) durumFiltre.addEventListener('change', listeleyiGuncelle);
 
-        onSnapshot(q, (snapshot) => {
-            if (snapshot.empty) {
+        try {
+            const q = collection(db, "basvurular");
+            onSnapshot(q, (snapshot) => {
                 tumBasvurular = [];
-                document.getElementById('stat-toplam').innerText = "0";
-                document.getElementById('stat-beklemede').innerText = "0";
-                document.getElementById('stat-arandi').innerText = "0";
-                document.getElementById('stat-onaylandi').innerText = "0";
+                let countToplam = 0;
+                let countBeklemede = 0;
+                let countArandi = 0;
+                let countOnaylandi = 0;
+
+                snapshot.forEach((docSnap) => {
+                    const veri = docSnap.data();
+                    tumBasvurular.push({ id: docSnap.id, ...veri });
+
+                    countToplam++;
+                    if (veri.durum === "beklemede") countBeklemede++;
+                    else if (veri.durum === "arandi") countArandi++;
+                    else if (veri.durum === "onaylandi") countOnaylandi++;
+                });
+
+                tumBasvurular.sort((a, b) => {
+                    const tA = a.kayitTarihi && a.kayitTarihi.seconds ? a.kayitTarihi.seconds : 0;
+                    const tB = b.kayitTarihi && b.kayitTarihi.seconds ? b.kayitTarihi.seconds : 0;
+                    return tB - tA;
+                });
+
+                document.getElementById('stat-toplam').innerText = countToplam;
+                document.getElementById('stat-beklemede').innerText = countBeklemede;
+                document.getElementById('stat-arandi').innerText = countArandi;
+                document.getElementById('stat-onaylandi').innerText = countOnaylandi;
+
                 listeleyiGuncelle();
-                return;
+            }, (error) => {
+                tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #ef4444; padding: 40px;">Firebase Hatası: ${error.message}</td></tr>`;
+            });
+        } catch (err) {
+            tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #ef4444; padding: 40px;">Bağlantı Başlatılamadı: ${err.message}</td></tr>`;
+        }
+
+        setTimeout(() => {
+            if (tumBasvurular.length === 0 && tabloGovdesi.innerHTML.includes("Veriler buluttan yükleniyor...")) {
+                tabloGovdesi.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #eab308; padding: 40px;"><i class="fa-solid fa-triangle-exclamation" style="margin-right: 10px;"></i> Veri gelmesi gecikti. Sayfayı çift tıklayarak açtıysanız lütfen VS Code Live Server kullanın patron.</td></tr>`;
             }
-
-            tumBasvurular = [];
-            let countToplam = 0;
-            let countBeklemede = 0;
-            let countArandi = 0;
-            let countOnaylandi = 0;
-
-            snapshot.forEach((docSnap) => {
-                const veri = docSnap.data();
-                tumBasvurular.push({ id: docSnap.id, ...veri });
-
-                countToplam++;
-                if (veri.durum === "beklemede") countBeklemede++;
-                else if (veri.durum === "arandi") countArandi++;
-                else if (veri.durum === "onaylandi") countOnaylandi++;
-            });
-
-            tumBasvurular.sort((a, b) => {
-                const tA = a.kayitTarihi && a.kayitTarihi.seconds ? a.kayitTarihi.seconds : 0;
-                const tB = b.kayitTarihi && b.kayitTarihi.seconds ? b.kayitTarihi.seconds : 0;
-                return tB - tA;
-            });
-
-            document.getElementById('stat-toplam').innerText = countToplam;
-            document.getElementById('stat-beklemede').innerText = countBeklemede;
-            document.getElementById('stat-arandi').innerText = countArandi;
-            document.getElementById('stat-onaylandi').innerText = countOnaylandi;
-
-            listeleyiGuncelle();
-        }, (error) => {
-            alert("Firebase Hatası: " + error.message);
-        });
+        }, 4000);
     }
 
     const fiyatFormu = document.getElementById('admin-fiyat-form');
